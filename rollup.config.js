@@ -24,6 +24,10 @@ export default merge(baseConfig, {
                     src: "./node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
                     dest: "dist",
                 },
+                {
+                    src: "./node_modules/webextension-polyfill/dist/browser-polyfill.min.js.map",
+                    dest: "dist",
+                },
             ],
         }),
         html({

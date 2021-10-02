@@ -1,18 +1,27 @@
 {
     "name": "nebula-new-tab",
-    "version": "1.0.0",
-    "description": "",
+    "version": "1.0.0-alpha.1",
+    "private": true,
+    "description": "A simple and clean new tab page",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hkamran80/nebula-new-tab.git"
+    },
     "scripts": {
         "dev:firefox": "web-ext run --source-dir dist",
+        "dev:chromium": "web-ext run --source-dir dist --target chromium",
         "build": "rimraf dist && tsc && rollup -c rollup.config.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "keywords": [
+        "new tab"
+    ],
+    "author": "H. Kamran",
+    "license": "GPLV3",
     "devDependencies": {
         "@open-wc/building-rollup": "^1.10.0",
         "@rollup/plugin-typescript": "^8.2.5",
+        "@types/webextension-polyfill": "^0.8.0",
         "autoprefixer": "^10.3.6",
         "deepmerge": "^4.2.2",
         "onchange": "^7.1.0",

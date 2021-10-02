@@ -1,0 +1,11 @@
+{
+    "manifest_version": 2,
+    "name": "Nebula New Tab",
+    "version": "0.1.0",
+    "description": "A simple and clean new tab page",
+    "author": "H. Kamran",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "permissions": ["storage"]
+}

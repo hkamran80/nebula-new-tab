@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+        <title>Nebula New Tab</title>
+
+        <meta
+            name="description"
+            content="Nebula New Tab - A simple and clean new tab page"
+        />
+        <meta name="keywords" content="new tab, simple, clean" />
+        <meta name="author" content="H. Kamran" />
+
+        <link
+            href="https://unpkg.com/tailwindcss/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+
+        <style>
+            body {
+                background-image: linear-gradient(
+                    to right,
+                    #1b181f,
+                    #20162e,
+                    #26133c,
+                    #2b0e4b,
+                    #320459
+                );
+            }
+        </style>
+    </head>
+
+    <body class="antialiased bg-white text-gray-100 tracking-tight">
+        <div class="flex flex-col min-h-screen overflow-hidden">
+            <main class="flex-grow">
+                <section class="relative">
+                    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                        <div class="pt-16 pb-12 md:pt-32">
+                            <div class="text-center pb-12 md:pb-16">
+                                <h1
+                                    class="
+                                        text-5xl
+                                        md:text-6xl
+                                        font-extrabold
+                                        leading-tighter
+                                        tracking-tighter
+                                        mb-4
+                                    "
+                                >
+                                    Nebula New Tab
+                                </h1>
+                                <div class="max-w-3xl mx-auto">
+                                    <p class="text-xl text-gray-400 mb-8">
+                                        A simple and clean new tab page
+                                    </p>
+                                    <div
+                                        class="
+                                            md:mt-8
+                                            max-w-xs
+                                            mx-auto
+                                            sm:max-w-none
+                                            sm:flex
+                                            sm:justify-center
+                                        "
+                                    >
+                                        <a
+                                            href="https://github.com/hkamran80/nebula-new-tab#chromium-based-browsers"
+                                            target="_blank"
+                                            class="
+                                                flex
+                                                items-center
+                                                bg-white
+                                                rounded-full
+                                                font-medium
+                                                group
+                                                p-4
+                                                px-6
+                                                shadow-lg
+                                                hover:text-purple-600
+                                                text-black
+                                            "
+                                        >
+                                            <span> Install on Chrome </span>
+                                        </a>
+
+                                        <a
+                                            href="https://addons.mozilla.org/en-US/firefox/addon/nebula-new-tab/"
+                                            target="_blank"
+                                            class="
+                                                md:ml-5
+                                                flex
+                                                items-center
+                                                bg-white
+                                                rounded-full
+                                                font-medium
+                                                group
+                                                p-4
+                                                px-6
+                                                shadow-lg
+                                                hover:text-purple-600
+                                                text-black
+                                            "
+                                        >
+                                            <span> Install on Firefox </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="relative flex justify-center mb-8">
+                                    <div class="flex flex-col justify-center">
+                                        <img
+                                            class="mx-auto"
+                                            src="../screenshots/nebula-new-tab-screenshot.png"
+                                            alt="Screenshot"
+                                            width="1920"
+                                            height="1080"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>

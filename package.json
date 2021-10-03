@@ -12,7 +12,7 @@
         "dev:chromium": "web-ext run --source-dir dist --target chromium",
         "build": "rimraf dist build && mkdir build && tsc && rollup -c rollup.config.js",
         "build:watch": "onchange 'src/*' -- npm run build",
-        "build:extension": "npm run build; web-ext build --source-dir dist",
+        "build:extension": "rimraf web-ext-artifacts && npm run build && web-ext build --source-dir dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "H. Kamran",

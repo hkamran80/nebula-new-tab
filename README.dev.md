@@ -1,0 +1,4 @@
+- Operating System: macOS
+    - Built on macOS Big Sur (11.2)
+- Tools: `npm install`
+- To build: `npm run build:extension`

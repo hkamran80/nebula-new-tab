@@ -10,7 +10,9 @@ browser.runtime.onInstalled.addListener(async () => {
         hourStatus: "12",
     });
 
-    await browser.tabs.create({ url: browser.runtime.getURL("index.html") });
+    console.debug(browser.runtime.getURL("/index.html"));
+
+    await browser.tabs.create({ url: browser.runtime.getURL("/index.html") });
 });
 
 // Background Image Initialization

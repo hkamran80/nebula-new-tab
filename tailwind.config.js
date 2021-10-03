@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
     mode: "jit",
-    purge: ["./template.html", "./index.ts", "./newtab.css"],
+    purge: ["./src/*.{html,css,ts}"],
     darkMode: "media",
     theme: {
         fontFamily: {

@@ -10,14 +10,11 @@
     "scripts": {
         "dev:firefox": "web-ext run --source-dir dist",
         "dev:chromium": "web-ext run --source-dir dist --target chromium",
-        "build": "rimraf dist && tsc && rollup -c rollup.config.js",
-        "build:watch": "onchange 'template.html' 'index.ts' 'manifest.json' -- npm run build",
+        "build": "rimraf dist build && mkdir build && tsc && rollup -c rollup.config.js",
+        "build:watch": "onchange 'src/*' -- npm run build",
         "build:extension": "npm run build; web-ext build --source-dir dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": [
-        "new tab"
-    ],
     "author": "H. Kamran",
     "license": "GPLV3",
     "devDependencies": {
@@ -33,6 +30,7 @@
         "rollup-plugin-copy": "^3.4.0",
         "rollup-plugin-execute": "^1.1.1",
         "rollup-plugin-postcss": "^4.0.1",
+        "rollup-plugin-terser": "^7.0.2",
         "tailwindcss": "^2.2.16",
         "typescript": "^4.4.3",
         "web-ext": "^6.4.0",

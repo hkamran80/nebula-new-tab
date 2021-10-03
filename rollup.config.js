@@ -4,11 +4,12 @@ import html from "rollup-plugin-bundle-html-thomzz";
 import copy from "rollup-plugin-copy";
 import postcss from "rollup-plugin-postcss";
 import execute from "rollup-plugin-execute";
+import { terser } from "rollup-plugin-terser";
 
 const baseConfig = createBasicConfig();
 
 export default merge(baseConfig, {
-    input: "./build/index.js",
+    input: "./build/src/index.js",
     output: {
         dir: "dist",
         format: "cjs",
@@ -20,7 +21,7 @@ export default merge(baseConfig, {
         }),
         copy({
             targets: [
-                { src: "manifest.json", dest: "dist" },
+                { src: "src/manifest.json", dest: "dist" },
                 {
                     src: "./node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
                     dest: "dist",
@@ -33,7 +34,7 @@ export default merge(baseConfig, {
             ],
         }),
         html({
-            template: "template.html",
+            template: "src/template.html",
             dest: "dist",
             filename: "index.html",
             externals: [
@@ -41,6 +42,10 @@ export default merge(baseConfig, {
             ],
             absolute: true,
         }),
-        execute(["npx tailwindcss -i ./newtab.css -o ./dist/newtab.css"]),
+        terser(),
+        execute([
+            "npx tailwindcss -i ./src/newtab.css -o ./dist/newtab.css",
+            "zip -r build/nebula-new-tab.zip dist",
+        ]),
     ],
 });

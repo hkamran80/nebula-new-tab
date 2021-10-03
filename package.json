@@ -2,7 +2,7 @@
     "name": "nebula-new-tab",
     "version": "1.0.0-alpha.2",
     "private": true,
-    "description": "A simple and clean new tab page",
+    "description": "A clean and simple new tab page",
     "repository": {
         "type": "git",
         "url": "https://github.com/hkamran80/nebula-new-tab.git"

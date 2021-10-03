@@ -1,5 +1,5 @@
 # Nebula
-## A simple and clean new tab page
+## A clean and simple new tab page
 
 ![Nebula screenshot](docs/nebula-new-tab-screenshot.png)
 

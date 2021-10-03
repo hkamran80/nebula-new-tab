@@ -1,7 +1,7 @@
 # Nebula
 ## A simple and clean new tab page
 
-![Nebula screenshot](screenshots/nebula-new-tab-screenshot.png)
+![Nebula screenshot](docs/nebula-new-tab-screenshot.png)
 
 ## Building
 1. Clone this repository

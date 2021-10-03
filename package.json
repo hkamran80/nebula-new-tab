@@ -1,6 +1,6 @@
 {
     "name": "nebula-new-tab",
-    "version": "1.0.0-alpha.1",
+    "version": "1.0.0-alpha.2",
     "private": true,
     "description": "A simple and clean new tab page",
     "repository": {
@@ -11,6 +11,8 @@
         "dev:firefox": "web-ext run --source-dir dist",
         "dev:chromium": "web-ext run --source-dir dist --target chromium",
         "build": "rimraf dist && tsc && rollup -c rollup.config.js",
+        "build:watch": "onchange 'template.html' 'index.ts' 'manifest.json' -- npm run build",
+        "build:extension": "npm run build; web-ext build --source-dir dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
@@ -27,9 +29,9 @@
         "onchange": "^7.1.0",
         "rimraf": "^3.0.2",
         "rollup": "^2.58.0",
+        "rollup-plugin-bundle-html-thomzz": "^1.2.0",
         "rollup-plugin-copy": "^3.4.0",
         "rollup-plugin-execute": "^1.1.1",
-        "rollup-plugin-html2": "^3.1.0",
         "rollup-plugin-postcss": "^4.0.1",
         "tailwindcss": "^2.2.16",
         "typescript": "^4.4.3",

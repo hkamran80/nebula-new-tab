@@ -2,6 +2,16 @@ const container = document.getElementById("content");
 const time = document.getElementById("time");
 const date = document.getElementById("date");
 const newBackgroundButton = document.getElementById("new-background-button");
+const timeModeSwitchButton = document.getElementById("time-mode-button");
+
+// Installation Events
+browser.runtime.onInstalled.addListener(async () => {
+    browser.storage.local.set({
+        hourStatus: "12",
+    });
+
+    await browser.tabs.create({ url: browser.runtime.getURL("index.html") });
+});
 
 // Background Image Initialization
 if (container) {
@@ -43,10 +53,9 @@ setTimeout((): void => {
 
     if (time) {
         time.classList.remove("opacity-0");
-        time.textContent =
-            d.getHours().toString() +
-            ":" +
-            padNumber(d.getMinutes().toString());
+        getUserHour(
+            (twelveHour: boolean) => (time.textContent = getTime(twelveHour))
+        );
     }
 
     if (date) {
@@ -62,20 +71,22 @@ setTimeout((): void => {
     if (newBackgroundButton) {
         newBackgroundButton.classList.remove("opacity-0");
     }
+
+    if (timeModeSwitchButton) {
+        timeModeSwitchButton.classList.remove("opacity-0");
+    }
 }, 300);
 
 // Intervals
 // Time Interval
 setInterval((): void => {
     if (time) {
-        const d = new Date();
-        time.textContent =
-            d.getHours().toString() +
-            ":" +
-            padNumber(d.getMinutes().toString());
+        getUserHour(
+            (twelveHour: boolean) => (time.textContent = getTime(twelveHour))
+        );
     }
-    // 5000 ms = 5 seconds
-}, 5000);
+    // 1000 ms = 1 second
+}, 1000);
 
 // Date Interval
 setInterval((): void => {
@@ -88,6 +99,20 @@ setInterval((): void => {
             day: "numeric",
         });
     }
+
+    const lastUpdated = browser.storage.local.get("lastUpdated");
+    lastUpdated.then(({ lastUpdated }) => {
+        if (
+            new Date().getTime() - new Date(lastUpdated).getTime() >=
+            86400000
+        ) {
+            if (container) {
+                saveNewBackgroundImage((dataUrl: string) => {
+                    container.style.backgroundImage = `url('${dataUrl}')`;
+                });
+            }
+        }
+    });
     // 3600000 ms = 1 hour
 }, 3600000);
 
@@ -103,6 +128,47 @@ if (newBackgroundButton) {
             }
         });
     });
+}
+
+// Time Mode Switcher Button
+if (timeModeSwitchButton) {
+    timeModeSwitchButton.addEventListener("click", () => {
+        getUserHour((twelveHour: boolean) => {
+            browser.storage.local.set({ hourStatus: twelveHour ? "24" : "12" });
+
+            if (time) {
+                time.textContent = getTime(!twelveHour);
+            }
+        });
+    });
+}
+
+// Functions
+function getUserHour(callback: Function): void {
+    const hourStatus = browser.storage.local.get("hourStatus");
+    hourStatus.then((hourData: any) => {
+        if (hourData.hourStatus) {
+            callback(hourData.hourStatus === "12");
+        } else {
+            callback(true);
+        }
+    });
+}
+
+function getTime(twelveHourTime: boolean): string {
+    const d = new Date();
+
+    if (twelveHourTime) {
+        return d.toLocaleString("en-us", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+        });
+    } else {
+        return (
+            d.getHours().toString() + ":" + padNumber(d.getMinutes().toString())
+        );
+    }
 }
 
 function saveNewBackgroundImage(callback = null as Function | null): void {

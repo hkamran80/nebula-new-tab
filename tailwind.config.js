@@ -1,16 +1,14 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
     mode: "jit",
-    purge: ["./template.html", "./index.ts"],
+    purge: ["./template.html", "./index.ts", "./newtab.css"],
     darkMode: "media",
     theme: {
-        extend: {
-            backgroundImage: {
-                "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-            },
+        fontFamily: {
+            sans: ["Quicksand", ...defaultTheme.fontFamily.sans],
+            serif: [...defaultTheme.fontFamily.serif],
+            mono: [...defaultTheme.fontFamily.mono],
         },
     },
-    variants: {
-        extend: {},
-    },
-    plugins: [],
 };

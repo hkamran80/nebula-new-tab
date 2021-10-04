@@ -1,5 +1,7 @@
-# Nebula
+# Nebula New Tab
 ## A clean and simple new tab page
+
+[![Get Nebula New Tab on Firefox](docs/get-addon-firefox.png)](https://addons.mozilla.org/en-US/firefox/addon/nebula-new-tab/)
 
 ![Nebula screenshot](docs/nebula-new-tab-screenshot.png)
 
@@ -20,4 +22,4 @@
 7. Enjoy Nebula!
 
 ### Firefox-based Browsers
-The add-on is currently being reviewed by Mozilla. This section will be updated after it is released.
+[![Get Nebula New Tab on Firefox](docs/get-addon-firefox.png)](https://addons.mozilla.org/en-US/firefox/addon/nebula-new-tab/)

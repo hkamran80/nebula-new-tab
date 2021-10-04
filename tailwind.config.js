@@ -7,8 +7,6 @@ module.exports = {
     theme: {
         fontFamily: {
             sans: ["Quicksand", ...defaultTheme.fontFamily.sans],
-            serif: [...defaultTheme.fontFamily.serif],
-            mono: [...defaultTheme.fontFamily.mono],
         },
     },
 };

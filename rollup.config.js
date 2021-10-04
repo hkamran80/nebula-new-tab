@@ -11,7 +11,7 @@ const baseConfig = createBasicConfig();
 export default merge(baseConfig, {
     input: "./build/src/index.js",
     output: {
-        dir: "dist",
+        dir: "build",
         format: "cjs",
         sourcemap: true,
     },
@@ -21,13 +21,14 @@ export default merge(baseConfig, {
         }),
         copy({
             targets: [
+                { src: "build/src/index.js", dest: "dist" },
                 { src: "src/manifest.json", dest: "dist" },
                 {
-                    src: "./node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
+                    src: "./node_modules/webextension-polyfill/dist/browser-polyfill.js",
                     dest: "dist",
                 },
                 {
-                    src: "./node_modules/webextension-polyfill/dist/browser-polyfill.min.js.map",
+                    src: "./node_modules/webextension-polyfill/dist/browser-polyfill.js.map",
                     dest: "dist",
                 },
                 { src: "assets", dest: "dist" },
@@ -38,14 +39,15 @@ export default merge(baseConfig, {
             dest: "dist",
             filename: "index.html",
             externals: [
-                { type: "js", file: "browser-polyfill.min.js", pos: "before" },
+                { type: "js", file: "browser-polyfill.js", pos: "before" },
+                { type: "js", file: "index.js", pos: "after" },
             ],
             absolute: true,
         }),
         terser(),
         execute([
             "npx tailwindcss -i ./src/newtab.css -o ./dist/newtab.css",
-            "zip -r build/nebula-new-tab.zip dist",
+            "npx prettier --tab-width 4 --write dist/**/*.{js,json,html,css}"
         ]),
     ],
 });

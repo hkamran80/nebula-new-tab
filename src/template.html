@@ -51,7 +51,7 @@
             </div>
 
             <div class="absolute top-7 left-7">
-                <button
+                <!-- <button
                     id="new-background-button"
                     class="opacity-0 transition-opacity duration-300 w-4"
                     title="Refresh the background"
@@ -71,9 +71,9 @@
                             d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
                         ></path>
                     </svg>
-                </button>
+                </button> -->
 
-                <button
+                <!-- <button
                     id="time-mode-button"
                     class="ml-3 opacity-0 transition-opacity duration-300 w-4"
                     title="Switch from 12-hour to 24-hour, or vice-versa"
@@ -90,7 +90,114 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
+                </button> -->
+            </div>
+
+            <div
+                id="attribution"
+                class="
+                    absolute
+                    bottom-7
+                    left-7
+                    text-white text-xs
+                    opacity-0
+                    transition-opacity
+                    duration-300
+                "
+            >
+                <span>
+                    Photo by
+                    <a
+                        id="photographer"
+                        href="https://unsplash.com/@hkamran?utm_source=nebula-new-tab&utm_medium=referral"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="underline"
+                    >
+                        Loading...
+                    </a>
+                    on
+                    <a
+                        href="https://unsplash.com/?utm_source=nebula-new-tab&utm_medium=referral"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="underline"
+                    >
+                        Unsplash
+                    </a>
+                </span>
+            </div>
+
+            <div class="absolute bottom-7 right-7">
+                <button
+                    id="settings-button"
+                    class="ml-3 opacity-0 transition-opacity duration-300 w-4"
+                    title="Open the settings panel"
+                    aria-label="Open the settings panel"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="stroke-current stroke-2 text-white"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+                        ></path>
+                    </svg>
                 </button>
+            </div>
+
+            <div id="settings-panel-template" style="display: none">
+                <div class="p-1">
+                    <span class="font-semibold text-xl"> Settings </span>
+
+                    <div class="mt-1 divide-y">
+                        <div class="flex py-1">
+                            <span class="flex-grow"> 24-hour Time </span>
+                            <input
+                                class="
+                                    hour-mode-switch
+                                    flew-grow-0
+                                    inline-block
+                                "
+                                type="checkbox"
+                            />
+                        </div>
+
+                        <div class="new-background-button" class="flex py-2">
+                            <span class="flex-grow"> Refresh Background </span>
+
+                            <div class="flew-grow-0">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="
+                                        stroke-current stroke-2
+                                        w-3
+                                        new-background-button--spin
+                                    "
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polyline
+                                        points="23 4 23 10 17 10"
+                                    ></polyline>
+                                    <polyline
+                                        points="1 20 1 14 7 14"
+                                    ></polyline>
+                                    <path
+                                        d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+                                    ></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

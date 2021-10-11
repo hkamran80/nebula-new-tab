@@ -1,38 +1,48 @@
 const container = document.getElementById("content");
 const time = document.getElementById("time");
 const date = document.getElementById("date");
-const newBackgroundButton = document.getElementById("new-background-button");
-const timeModeSwitchButton = document.getElementById("time-mode-button");
+const photographer = document.getElementById(
+    "photographer"
+) as HTMLAnchorElement;
+const attribution = document.getElementById("attribution");
+const settingsButton = document.getElementById("settings-button");
+const settingsPanelTemplate = document.getElementById(
+    "settings-panel-template"
+);
+const hourModeSwitchSelector = ".hour-mode-switch";
+const newBackgroundButtonSelector = ".new-background-button";
+const newBackgroundButtonAnimationSelector = ".new-background-button--spin";
 
-// Installation Events
-browser.runtime.onInstalled.addListener(async () => {
-    browser.storage.local.set({
-        hourStatus: "12",
-    });
-
-    console.debug(browser.runtime.getURL("/index.html"));
-
-    await browser.tabs.create({ url: browser.runtime.getURL("/index.html") });
-});
+const proxyUrl = "https://nebula-unsplash-proxy.hkamran-workers.workers.dev";
 
 // Background Image Initialization
 if (container) {
     const lastUpdated = browser.storage.local.get("lastUpdated");
     lastUpdated.then(
         ({ lastUpdated }) => {
+            // 12 hours
             if (
                 new Date().getTime() - new Date(lastUpdated).getTime() >=
-                86400000
+                43200000
             ) {
                 saveNewBackgroundImage();
             }
 
-            const backgroundImage =
-                browser.storage.local.get("backgroundImage");
+            const backgroundImage = browser.storage.local.get({
+                backgroundImage: "/assets/defaultBackground.jpg",
+                photographerName: "Martin Adams",
+                photographerUrl: "https://unsplash.com/@martinadams",
+            });
             backgroundImage.then(
-                (imageData: any) => {
-                    if (imageData.backgroundImage) {
-                        container.style.backgroundImage = `url('${imageData.backgroundImage}')`;
+                (data: any) => {
+                    if (data.backgroundImage) {
+                        container.style.backgroundImage = `url('${data.backgroundImage}')`;
+
+                        setAttribution({
+                            photographer: data.photographerName,
+                            photographerUrl: data.photographerUrl,
+                            imageUrl: "",
+                        });
                     } else {
                         saveNewBackgroundImage((dataUrl: string) => {
                             container.style.backgroundImage = `url('${dataUrl}')`;
@@ -70,12 +80,12 @@ setTimeout((): void => {
         });
     }
 
-    if (newBackgroundButton) {
-        newBackgroundButton.classList.remove("opacity-0");
+    if (attribution) {
+        attribution.classList.remove("opacity-0");
     }
 
-    if (timeModeSwitchButton) {
-        timeModeSwitchButton.classList.remove("opacity-0");
+    if (settingsButton) {
+        settingsButton.classList.remove("opacity-0");
     }
 }, 300);
 
@@ -83,9 +93,9 @@ setTimeout((): void => {
 // Time Interval
 setInterval((): void => {
     if (time) {
-        getUserHour(
-            (twelveHour: boolean) => (time.textContent = getTime(twelveHour))
-        );
+        getUserHour((twelveHour: boolean) => {
+            time.textContent = getTime(twelveHour);
+        });
     }
     // 1000 ms = 1 second
 }, 1000);
@@ -118,30 +128,50 @@ setInterval((): void => {
     // 3600000 ms = 1 hour
 }, 3600000);
 
-// New Background Button
-if (newBackgroundButton) {
-    newBackgroundButton.addEventListener("click", () => {
-        newBackgroundButton.classList.add("animate-spin");
+// Time Mode Switcher Button, Settings Panel
+if (settingsButton && settingsPanelTemplate) {
+    // Settings Panel
+    // @ts-ignore
+    tippy(settingsButton, {
+        content: settingsPanelTemplate.innerHTML,
+        allowHTML: true,
+        interactive: true,
+        onShown(instance: any) {
+            getUserHour((twelveHour: boolean) => {
+                $(hourModeSwitchSelector).prop("checked", !twelveHour);
+            });
 
-        saveNewBackgroundImage((dataUrl: string) => {
-            if (container) {
-                container.style.backgroundImage = `url('${dataUrl}')`;
-                newBackgroundButton.classList.remove("animate-spin");
-            }
-        });
-    });
-}
+            $(hourModeSwitchSelector)
+                .off("click")
+                .on("click", function () {
+                    getUserHour((twelveHour: boolean) => {
+                        browser.storage.local.set({
+                            hourStatus: twelveHour ? "24" : "12",
+                        });
 
-// Time Mode Switcher Button
-if (timeModeSwitchButton) {
-    timeModeSwitchButton.addEventListener("click", () => {
-        getUserHour((twelveHour: boolean) => {
-            browser.storage.local.set({ hourStatus: twelveHour ? "24" : "12" });
+                        if (time) {
+                            time.textContent = getTime(!twelveHour);
+                        }
+                    });
+                });
 
-            if (time) {
-                time.textContent = getTime(!twelveHour);
-            }
-        });
+            $(newBackgroundButtonSelector)
+                .off("click")
+                .on("click", () => {
+                    $(newBackgroundButtonAnimationSelector).addClass(
+                        "animate-spin"
+                    );
+                    
+                    saveNewBackgroundImage((dataUrl: string) => {
+                        if (container) {
+                            container.style.backgroundImage = `url('${dataUrl}')`;
+                            $(newBackgroundButtonAnimationSelector).removeClass(
+                                "animate-spin"
+                            );
+                        }
+                    });
+                });
+        },
     });
 }
 
@@ -173,13 +203,13 @@ function getTime(twelveHourTime: boolean): string {
     }
 }
 
-function saveNewBackgroundImage(callback = null as Function | null): void {
+function saveNewBackgroundImage(callback = null as Function | null) {
     const d = new Date();
-    toDataURL(
-        `https://source.unsplash.com/collection/935518/${window.screen.width}x${
-            window.screen.height
-        }?q=${d.getTime()}`,
-        (dataUrl: string) => {
+
+    getUnsplashImage()
+        .then((response) => setAttribution(response))
+        .then((response) => response.imageUrl && toDataURL(response.imageUrl))
+        .then((dataUrl) => {
             browser.storage.local.set({
                 backgroundImage: dataUrl,
                 lastUpdated: d.toISOString(),
@@ -188,43 +218,69 @@ function saveNewBackgroundImage(callback = null as Function | null): void {
             if (callback) {
                 callback(dataUrl);
             }
-        }
-    );
+        });
 }
 
-function toDataURL(
-    src: string,
-    callback: Function,
-    outputFormat = "image/png"
-) {
-    var img = new Image();
-    img.crossOrigin = "Anonymous";
-    img.onload = function () {
-        var canvas = document.createElement("canvas");
-        var ctx = canvas.getContext("2d");
-        var dataURL;
+async function toDataURL(imageUrl: string): Promise<any> {
+    let blob = await fetch(imageUrl).then((r) => r.blob());
 
-        canvas.height = img.naturalHeight;
-        canvas.width = img.naturalWidth;
+    let dataUrl = await new Promise((resolve) => {
+        let reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+    });
 
-        if (ctx) {
-            ctx.drawImage(img, 0, 0);
+    return dataUrl;
+}
 
-            dataURL = canvas.toDataURL(outputFormat);
-            callback(dataURL);
-        }
-    };
+async function setAttribution(
+    unsplashResponse: UnsplashResponse
+): Promise<UnsplashResponse> {
+    if (photographer) {
+        photographer.href =
+            unsplashResponse.photographerUrl +
+            "?utm_source=nebula-new-tab&utm_medium=referral";
 
-    img.src = src;
-    if (img.complete || img.complete === undefined) {
-        img.src =
-            "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
-        img.src = src;
+        photographer.textContent = unsplashResponse.photographer;
     }
+
+    browser.storage.local.set({
+        photographerName: unsplashResponse.photographer,
+        photographerUrl: unsplashResponse.photographerUrl,
+    });
+
+    return unsplashResponse;
 }
 
 function padNumber(number: number | string): string {
     return Number(number < 10)
         ? "0" + Number(number).toString()
         : Number(number).toString();
+}
+
+async function getUnsplashImage(): Promise<UnsplashResponse> {
+    const randomImage = await fetch(`${proxyUrl}/random?collections=935518`);
+    const randomImageJson = await randomImage.json();
+    const encodedUrl = encodeURIComponent(
+        randomImageJson.links.download_location
+    );
+    const downloadUrl = await fetch(
+        `${proxyUrl}/download?downloadUrl=${encodedUrl}`
+    );
+    const downloadUrlJson = await downloadUrl.json();
+
+    const imageUrl = downloadUrlJson.url;
+
+    return {
+        photographer: randomImageJson.user.name,
+        photographerUrl: randomImageJson.user.links.html,
+        imageUrl,
+    } as UnsplashResponse;
+}
+
+// Models
+interface UnsplashResponse {
+    photographer: string;
+    photographerUrl: string;
+    imageUrl: string;
 }

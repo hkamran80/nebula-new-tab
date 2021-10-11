@@ -2,7 +2,6 @@ import merge from "deepmerge";
 import { createBasicConfig } from "@open-wc/building-rollup";
 import html from "rollup-plugin-bundle-html-thomzz";
 import copy from "rollup-plugin-copy";
-import postcss from "rollup-plugin-postcss";
 import execute from "rollup-plugin-execute";
 import { terser } from "rollup-plugin-terser";
 
@@ -16,12 +15,9 @@ export default merge(baseConfig, {
         sourcemap: true,
     },
     plugins: [
-        postcss({
-            extract: true,
-        }),
         copy({
             targets: [
-                { src: "build/src/index.js", dest: "dist" },
+                { src: "build/src/background.js", dest: "dist" },
                 { src: "src/manifest.json", dest: "dist" },
                 {
                     src: "./node_modules/webextension-polyfill/dist/browser-polyfill.js",
@@ -31,23 +27,46 @@ export default merge(baseConfig, {
                     src: "./node_modules/webextension-polyfill/dist/browser-polyfill.js.map",
                     dest: "dist",
                 },
+                {
+                    src: "./node_modules/@popperjs/core/dist/umd/popper.js",
+                    dest: "dist",
+                },
+                {
+                    src: "./node_modules/@popperjs/core/dist/umd/popper.js.map",
+                    dest: "dist",
+                },
+                {
+                    src: "./node_modules/tippy.js/dist/tippy.umd.js",
+                    dest: "dist",
+                    rename: "tippy.js",
+                },
+                {
+                    src: "./node_modules/tippy.js/dist/tippy.umd.js.map",
+                    dest: "dist",
+                    transform: (contents, _) =>
+                        contents.toString().replace("tippy.umd.js", "tippy.js"),
+                },
+                { src: "./node_modules/tippy.js/dist/tippy.css", dest: "dist" },
+                { src: "./node_modules/jquery/dist/jquery.js", dest: "dist" },
                 { src: "assets", dest: "dist" },
+                {
+                    src: "build/src/index.js",
+                    dest: "dist",
+                    rename: "z_index.js", // Needed to ensure that tippy.js and popper are imported first
+                },
             ],
+            hook: "generateBundle",
         }),
         html({
             template: "src/template.html",
             dest: "dist",
             filename: "index.html",
-            externals: [
-                { type: "js", file: "browser-polyfill.js", pos: "before" },
-                { type: "js", file: "index.js", pos: "after" },
-            ],
             absolute: true,
         }),
         terser(),
         execute([
             "npx tailwindcss -i ./src/newtab.css -o ./dist/newtab.css",
-            "npx prettier --tab-width 4 --write dist/**/*.{js,json,html,css}"
+            "npx prettier --tab-width 4 --write dist/**/*.{js,json,html,css}",
         ]),
     ],
 });

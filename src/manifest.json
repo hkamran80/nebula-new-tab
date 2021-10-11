@@ -2,18 +2,33 @@
     "manifest_version": 2,
     "name": "Nebula New Tab",
     "short_name": "Nebula",
-    "version": "0.9.2",
+    "version": "0.9.9.9999",
+    "version_name": "1.0.0-alpha.1",
+
     "description": "A clean and simple new tab page",
     "author": "H. Kamran",
     "developer": {
         "name": "H. Kamran",
         "url": "https://hkamran.com"
     },
+    
     "icons": {
         "16": "assets/icons/logo16.png",
+        "32": "assets/icons/logo32.png",
         "48": "assets/icons/logo48.png",
         "96": "assets/icons/logo96.png",
         "128": "assets/icons/logo128.png"
+    },
+    
+    "browser_action": {
+        "default_title": "Nebula New Tab",
+        "default_icon": {
+            "16": "assets/icons/logo16.png",
+            "32": "assets/icons/logo32.png"
+        }
+    },
+    "background": {
+        "scripts": ["browser-polyfill.js", "background.js"]
     },
     "chrome_url_overrides": {
         "newtab": "index.html"

@@ -19,10 +19,10 @@
 [![Get Nebula New Tab on Firefox](docs/get-addon-firefox.png)](https://addons.mozilla.org/en-US/firefox/addon/nebula-new-tab/)
 
 ### Opera
-Coming soon!
+Coming with the release of version 1.0!
 
 ### Microsoft Edge
-Coming as soon as Microsoft fixes their Partner Center so I can actually sign up
+Coming with the release of version 1.0!
 
 ## Building
 1. Clone this repository

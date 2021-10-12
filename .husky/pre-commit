@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx tailwindcss -i ./docs/nebula-base.css -c ./tailwind.config.js -o ./dist/nebula.css
+npx tailwindcss -i ./docs/nebula-base.css -c ./docs/tailwind.config.js -o ./docs/nebula.css

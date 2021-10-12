@@ -11,7 +11,10 @@
             name="description"
             content="Nebula New Tab - A clean and simple new tab page"
         />
-        <meta name="keywords" content="new tab, simple, clean" />
+        <meta
+            name="keywords"
+            content="new tab, simple, clean, extension, addon, firefox, mozilla firefox, chrome, google chrome, edge, microsoft edge, opera"
+        />
         <meta name="author" content="H. Kamran" />
 
         <meta property="og:title" content="Nebula New Tab" />
@@ -29,10 +32,7 @@
             rel="stylesheet"
         />
 
-        <link
-            href="https://unpkg.com/tailwindcss/dist/tailwind.min.css"
-            rel="stylesheet"
-        />
+        <link href="nebula.css" rel="stylesheet" />
 
         <style>
             body {
@@ -44,8 +44,6 @@
                     #2b0e4b,
                     #320459
                 );
-
-                font-family: "Quicksand", sans-serif;
             }
         </style>
     </head>
@@ -53,7 +51,7 @@
     <body class="antialiased bg-white text-gray-100 tracking-tight">
         <div class="flex flex-col min-h-screen overflow-hidden">
             <main class="flex-grow">
-                <section class="relative">
+                <section class="relative min-h-screen">
                     <div class="max-w-6xl mx-auto px-4 sm:px-6">
                         <div class="pt-20 md:pt-32">
                             <div class="text-center pb-12">
@@ -73,13 +71,13 @@
                                     <p
                                         class="
                                             text-xl text-gray-300
-                                            mb-8
                                             font-medium
                                         "
                                     >
                                         A clean and simple new tab page
                                     </p>
                                     <div
+                                        id="download-buttons"
                                         class="
                                             md:mt-8
                                             max-w-xs
@@ -108,7 +106,7 @@
                                                 text-black
                                             "
                                         >
-                                            <span> Install on Chrome </span>
+                                            <span> Install in Chrome </span>
                                         </a>
 
                                         <a
@@ -131,7 +129,7 @@
                                                 text-black
                                             "
                                         >
-                                            <span> Install on Firefox </span>
+                                            <span> Install in Firefox </span>
                                         </a>
                                     </div>
 
@@ -166,6 +164,213 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <section id="features" class="relative bg-white">
+                    <div
+                        class="
+                            max-w-7xl
+                            mx-auto
+                            py-16
+                            px-4
+                            sm:px-6
+                            lg:py-24 lg:px-8
+                        "
+                    >
+                        <div class="max-w-3xl mx-auto text-center">
+                            <h2 class="text-3xl font-extrabold text-gray-900">
+                                Features
+                            </h2>
+                        </div>
+                        <dl
+                            class="
+                                mt-12
+                                space-y-10
+                                sm:space-y-0
+                                sm:grid
+                                sm:grid-cols-2
+                                sm:gap-x-6
+                                sm:gap-y-12
+                                lg:grid-cols-4 lg:gap-x-8
+                            "
+                        >
+                            <div class="flex">
+                                <svg
+                                    class="flex-shrink-0 h-6 w-6 text-green-500"
+                                    x-description="Heroicon name: check"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"
+                                    ></path>
+                                </svg>
+                                <div class="ml-3">
+                                    <dt
+                                        class="
+                                            text-lg
+                                            leading-6
+                                            font-medium
+                                            text-gray-900
+                                        "
+                                    >
+                                        Time and Date
+                                    </dt>
+                                    <dd class="mt-2 text-base text-gray-500">
+                                        One of two very important features of
+                                        Nebula
+                                    </dd>
+                                </div>
+                            </div>
+
+                            <div class="flex">
+                                <svg
+                                    class="flex-shrink-0 h-6 w-6 text-green-500"
+                                    x-description="Heroicon name: check"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"
+                                    ></path>
+                                </svg>
+                                <div class="ml-3">
+                                    <dt
+                                        class="
+                                            text-lg
+                                            leading-6
+                                            font-medium
+                                            text-gray-900
+                                        "
+                                    >
+                                        24-hour Time
+                                    </dt>
+                                    <dd class="mt-2 text-base text-gray-500">
+                                        An essential feature in many people's
+                                        eyes
+
+                                        <p class="text-sm mt-1">
+                                            This feature can be turned on from
+                                            the settings menu
+                                        </p>
+                                    </dd>
+                                </div>
+                            </div>
+
+                            <div class="flex">
+                                <svg
+                                    class="flex-shrink-0 h-6 w-6 text-green-500"
+                                    x-description="Heroicon name: check"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"
+                                    ></path>
+                                </svg>
+                                <div class="ml-3">
+                                    <dt
+                                        class="
+                                            text-lg
+                                            leading-6
+                                            font-medium
+                                            text-gray-900
+                                        "
+                                    >
+                                        Background Images
+                                    </dt>
+                                    <dd class="mt-2 text-base text-gray-500">
+                                        Powered by
+                                        <a
+                                            href="https://unsplash.com/?utm_source=nebula-new-tab&utm_medium=referral"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="underline"
+                                        >
+                                            Unsplash </a
+                                        >,
+                                        <a
+                                            href="https://unsplash.com/collections/935518/night-sky?utm_source=nebula-new-tab&utm_medium=referral"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="underline"
+                                        >
+                                            these background images
+                                        </a>
+                                        are beautiful and simple
+
+                                        <p class="text-sm mt-1">
+                                            Backgrounds refresh every 12 hours
+                                        </p>
+
+                                        <p class="text-sm mt-1">
+                                            Change the background images at any
+                                            time by clicking the "Refresh
+                                            Background" button in the settings
+                                            menu
+                                        </p>
+                                    </dd>
+                                </div>
+                            </div>
+
+                            <div class="flex">
+                                <svg
+                                    class="flex-shrink-0 h-6 w-6 text-green-500"
+                                    x-description="Heroicon name: check"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"
+                                    ></path>
+                                </svg>
+                                <div class="ml-3">
+                                    <dt
+                                        class="
+                                            text-lg
+                                            leading-6
+                                            font-medium
+                                            text-gray-900
+                                        "
+                                    >
+                                        Top Sites Integration
+                                    </dt>
+                                    <dd class="mt-2 text-base text-gray-500">
+                                        View your top visited sites in Nebula
+
+                                        <p class="text-sm mt-1">
+                                            This feature can be turned on from
+                                            the settings menu
+                                        </p>
+                                    </dd>
+                                </div>
+                            </div>
+                        </dl>
                     </div>
                 </section>
             </main>

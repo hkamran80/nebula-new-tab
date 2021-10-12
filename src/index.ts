@@ -30,11 +30,11 @@ if (container) {
                 saveNewBackgroundImage();
             }
 
-            const backgroundImage = browser.storage.local.get({
-                backgroundImage: "/assets/defaultBackground.jpg",
-                photographerName: "Martin Adams",
-                photographerUrl: "https://unsplash.com/@martinadams",
-            });
+            const backgroundImage = browser.storage.local.get([
+                "backgroundImage",
+                "photographerName",
+                "photographerUrl",
+            ]);
             backgroundImage.then(
                 (data: any) => {
                     if (data.backgroundImage) {

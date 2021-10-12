@@ -22,6 +22,13 @@
             content="A clean and simple new tab page"
         />
 
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
+            rel="stylesheet"
+        />
+
         <link
             href="https://unpkg.com/tailwindcss/dist/tailwind.min.css"
             rel="stylesheet"
@@ -37,6 +44,8 @@
                     #2b0e4b,
                     #320459
                 );
+
+                font-family: "Quicksand", sans-serif;
             }
         </style>
     </head>
@@ -52,7 +61,7 @@
                                     class="
                                         text-5xl
                                         md:text-6xl
-                                        font-extrabold
+                                        font-bold
                                         leading-tighter
                                         tracking-tighter
                                         mb-4
@@ -61,7 +70,13 @@
                                     Nebula New Tab
                                 </h1>
                                 <div class="max-w-3xl mx-auto">
-                                    <p class="text-xl text-gray-400 mb-8">
+                                    <p
+                                        class="
+                                            text-xl text-gray-300
+                                            mb-8
+                                            font-medium
+                                        "
+                                    >
                                         A clean and simple new tab page
                                     </p>
                                     <div
@@ -124,7 +139,13 @@
                                         <a
                                             href="https://github.com/hkamran80/nebula-new-tab"
                                             target="_blank"
-                                            class="text-center bg-purple-900 p-2 px-4 rounded-md"
+                                            class="
+                                                text-center
+                                                bg-purple-900
+                                                p-2
+                                                px-4
+                                                rounded-md
+                                            "
                                         >
                                             View on GitHub
                                         </a>

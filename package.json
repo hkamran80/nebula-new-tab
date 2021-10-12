@@ -14,7 +14,8 @@
         "dev:edge": "web-ext run --source-dir dist --target chromium --chromium-binary '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge'",
         "build": "rimraf dist build && mkdir build && tsc && rollup -c rollup.config.js",
         "build:watch": "onchange -i 'src/*' -- npm run build",
-        "build:extension": "rimraf web-ext-artifacts && npm run build && web-ext build --source-dir dist"
+        "build:extension": "rimraf web-ext-artifacts && npm run build && web-ext build --source-dir dist",
+        "prepare": "husky install"
     },
     "author": "H. Kamran",
     "license": "GPLV3",
@@ -37,6 +38,7 @@
         "tippy.js": "^6.3.2",
         "typescript": "^4.4.3",
         "web-ext": "^6.4.0",
-        "webextension-polyfill": "^0.8.0"
+        "webextension-polyfill": "^0.8.0",
+        "husky": "^7.0.0"
     }
 }

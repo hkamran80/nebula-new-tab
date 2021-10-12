@@ -2,3 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx tailwindcss -i ./docs/nebula-base.css -c ./docs/tailwind.config.js -o ./docs/nebula.css
+npx prettier --tab-width 4 --write docs/**/*.{html,css,js}

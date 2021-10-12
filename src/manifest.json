@@ -11,7 +11,7 @@
         "name": "H. Kamran",
         "url": "https://hkamran.com"
     },
-    
+
     "icons": {
         "16": "assets/icons/logo16.png",
         "32": "assets/icons/logo32.png",
@@ -19,7 +19,7 @@
         "96": "assets/icons/logo96.png",
         "128": "assets/icons/logo128.png"
     },
-    
+
     "browser_action": {
         "default_title": "Nebula New Tab",
         "default_icon": {
@@ -33,5 +33,6 @@
     "chrome_url_overrides": {
         "newtab": "index.html"
     },
-    "permissions": ["storage"]
+    "permissions": ["storage", "topSites"],
+    "browser_specific_settings": { "gecko": { "strict_min_version": "52.0a1" } }
 }

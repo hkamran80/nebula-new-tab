@@ -4,18 +4,20 @@ const date = document.getElementById("date");
 const photographer = document.getElementById(
     "photographer"
 ) as HTMLAnchorElement;
+const topSitesContainer = document.getElementById("topSites");
 const attribution = document.getElementById("attribution");
 const settingsButton = document.getElementById("settings-button");
 const settingsPanelTemplate = document.getElementById(
     "settings-panel-template"
 );
 const hourModeSwitchSelector = ".hour-mode-switch";
+const topSitesSwitchSelector = ".top-sites-switch";
 const newBackgroundButtonSelector = ".new-background-button";
 const newBackgroundButtonAnimationSelector = ".new-background-button--spin";
 
 const proxyUrl = "https://nebula-unsplash-proxy.hkamran-workers.workers.dev";
 
-// Background Image Initialization
+// Initialization
 if (container) {
     const lastUpdated = browser.storage.local.get("lastUpdated");
     lastUpdated.then(
@@ -48,6 +50,8 @@ if (container) {
                             container.style.backgroundImage = `url('${dataUrl}')`;
                         });
                     }
+
+                    toggleTopSites();
                 },
                 () =>
                     console.error(
@@ -155,13 +159,17 @@ if (settingsButton && settingsPanelTemplate) {
                     });
                 });
 
+            $(topSitesSwitchSelector)
+                .off("click")
+                .on("click", () => toggleTopSites());
+
             $(newBackgroundButtonSelector)
                 .off("click")
                 .on("click", () => {
                     $(newBackgroundButtonAnimationSelector).addClass(
                         "animate-spin"
                     );
-                    
+
                     saveNewBackgroundImage((dataUrl: string) => {
                         if (container) {
                             container.style.backgroundImage = `url('${dataUrl}')`;
@@ -185,6 +193,62 @@ function getUserHour(callback: Function): void {
             callback(true);
         }
     });
+}
+
+function toggleTopSites(firstRun?: boolean): void {
+    const topSitesData = browser.storage.local.get({ topSites: false });
+    console.debug(topSitesData);
+    topSitesData.then((topSiteValue) => {
+        if (topSiteValue.topSites) {
+            loadTopSites();
+
+            if (!firstRun) {
+                browser.storage.local.set({
+                    topSites: false,
+                });
+            }
+        } else {
+            unloadTopSites();
+
+            if (!firstRun) {
+                browser.storage.local.set({
+                    topSites: true,
+                });
+            }
+        }
+    });
+}
+
+function unloadTopSites(): void {
+    if (topSitesContainer) {
+        topSitesContainer.textContent = "";
+    }
+}
+
+function loadTopSites(): void {
+    console.debug("Loading top sites...");
+    browser.topSites
+        .get({ includeFavicon: true, limit: 5 })
+        .then((topSites) => {
+            console.debug(topSites);
+            topSites.forEach((site) => {
+                const a = document.createElement("a");
+                a.href = site.url;
+                a.title = site.title || "";
+                a.target = "_blank";
+
+                if (site.favicon) {
+                    const img = document.createElement("img");
+                    img.className = "w-6";
+                    img.src = site.favicon;
+                    a.appendChild(img);
+                }
+
+                if (topSitesContainer) {
+                    topSitesContainer.appendChild(a);
+                }
+            });
+        });
 }
 
 function getTime(twelveHourTime: boolean): string {

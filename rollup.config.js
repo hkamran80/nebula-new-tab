@@ -4,6 +4,7 @@ import html from "rollup-plugin-bundle-html-thomzz";
 import copy from "rollup-plugin-copy";
 import execute from "rollup-plugin-execute";
 import { terser } from "rollup-plugin-terser";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 const baseConfig = createBasicConfig();
 
@@ -15,9 +16,10 @@ export default merge(baseConfig, {
         sourcemap: true,
     },
     plugins: [
+        nodeResolve(),
+        terser(),
         copy({
             targets: [
-                { src: "build/src/background.js", dest: "dist" },
                 { src: "src/manifest.json", dest: "dist" },
                 {
                     src: "./node_modules/webextension-polyfill/dist/browser-polyfill.js",
@@ -63,8 +65,8 @@ export default merge(baseConfig, {
             filename: "index.html",
             absolute: true,
         }),
-        terser(),
         execute([
+            "cpy 'build/src/background.js' dist",
             "npx tailwindcss -i ./src/newtab.css -o ./dist/newtab.css",
             "npx prettier --tab-width 4 --write dist/**/*.{js,json,html,css}",
         ]),

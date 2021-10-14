@@ -2,8 +2,8 @@
     "manifest_version": 2,
     "name": "Nebula New Tab",
     "short_name": "Nebula",
-    "version": "0.9.9.9999",
-    "version_name": "1.0.0-alpha.1",
+    "version": "0.9.10.0",
+    "version_name": "1.0.0-alpha.2",
 
     "description": "A clean and simple new tab page",
     "author": "H. Kamran",

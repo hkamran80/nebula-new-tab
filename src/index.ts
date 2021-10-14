@@ -15,6 +15,7 @@ const topSitesSwitchSelector = ".top-sites-switch";
 const newBackgroundButtonSelector = ".new-background-button";
 const newBackgroundButtonAnimationSelector = ".new-background-button--spin";
 
+// Please don't abuse this
 const proxyUrl = "https://nebula-unsplash-proxy.hkamran-workers.workers.dev";
 
 // Initialization
@@ -51,7 +52,7 @@ if (container) {
                         });
                     }
 
-                    toggleTopSites();
+                    toggleTopSites(true);
                 },
                 () =>
                     console.error(
@@ -201,20 +202,12 @@ function toggleTopSites(firstRun?: boolean): void {
     topSitesData.then((topSiteValue) => {
         if (topSiteValue.topSites) {
             loadTopSites();
-
-            if (!firstRun) {
-                browser.storage.local.set({
-                    topSites: false,
-                });
-            }
         } else {
             unloadTopSites();
+        }
 
-            if (!firstRun) {
-                browser.storage.local.set({
-                    topSites: true,
-                });
-            }
+        if (!firstRun) {
+            browser.storage.local.set({ topSites: !topSiteValue.topSites });
         }
     });
 }
@@ -226,29 +219,73 @@ function unloadTopSites(): void {
 }
 
 function loadTopSites(): void {
-    console.debug("Loading top sites...");
-    browser.topSites
-        .get({ includeFavicon: true, limit: 5 })
-        .then((topSites) => {
-            console.debug(topSites);
-            topSites.forEach((site) => {
+    if (getBrowser() === Browsers.Gecko) {
+        browser.topSites
+            .get({ includeFavicon: true, limit: 5 })
+            .then((topSites) => {
+                console.debug(topSites);
+                topSites.forEach((site) => {
+                    const a = document.createElement("a");
+                    a.href = site.url;
+                    a.title = site.title || "";
+                    a.target = "_blank";
+
+                    if (site.favicon) {
+                        const img = document.createElement("img");
+                        img.className = "w-6";
+                        img.src = site.favicon;
+                        a.appendChild(img);
+                    }
+
+                    if (topSitesContainer) {
+                        topSitesContainer.appendChild(a);
+                    }
+                });
+            });
+    } else {
+        browser.topSites.get().then((topSites) => {
+            topSites.slice(0, 5).forEach((site) => {
                 const a = document.createElement("a");
                 a.href = site.url;
                 a.title = site.title || "";
                 a.target = "_blank";
 
-                if (site.favicon) {
-                    const img = document.createElement("img");
-                    img.className = "w-6";
-                    img.src = site.favicon;
-                    a.appendChild(img);
-                }
+                const img = document.createElement("img");
+                img.className = "w-6";
+                toDataURL(
+                    `https://api.faviconkit.com/${new URL(site.url).host}`
+                )
+                    .then((dataUrl) => (img.src = dataUrl))
+                    .catch(
+                        () =>
+                            (img.src =
+                                "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-globe'%3e%3ccircle cx='12' cy='12' r='10'%3e%3c/circle%3e%3cline x1='2' y1='12' x2='22' y2='12'%3e%3c/line%3e%3cpath d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'%3e%3c/path%3e%3c/svg%3e")
+                    );
+
+                a.appendChild(img);
 
                 if (topSitesContainer) {
                     topSitesContainer.appendChild(a);
                 }
             });
         });
+    }
+}
+
+async function getFaviconUrl(host: string): Promise<string> {
+    const apiRequest = await fetch(
+        `http://favicongrabber.com/api/grab/${host}`
+    );
+
+    const apiJson = await apiRequest.json();
+    if (apiJson) {
+        console.debug(apiJson);
+        console.debug(apiJson.icons[0]);
+        console.debug(apiJson.icons[0].src);
+        return apiJson.icons[0].src;
+    }
+
+    throw new Error("Unable to retrieve favicon URL");
 }
 
 function getTime(twelveHourTime: boolean): string {
@@ -342,9 +379,40 @@ async function getUnsplashImage(): Promise<UnsplashResponse> {
     } as UnsplashResponse;
 }
 
+function getBrowser(): Browsers | null {
+    // @ts-ignore
+    const browserPrefix = Object.values(
+        window.getComputedStyle(document.documentElement, "")
+    )
+        .join("")
+        .match(/-(moz|webkit|ms)/)[1];
+
+    /*
+    `moz` - Gecko (Firefox)
+    `webkit` - WebKit (Chrome, Safari, Opera, Edge (Chromium))
+    `ms` - MS (Internet Explorer, Edge (Trident Engine))
+    */
+    switch (browserPrefix) {
+        case "moz":
+            return Browsers.Gecko;
+        case "webkit":
+            return Browsers.WebKit;
+        case "ms":
+            return Browsers.MS;
+        default:
+            return null;
+    }
+}
+
 // Models
 interface UnsplashResponse {
     photographer: string;
     photographerUrl: string;
     imageUrl: string;
+}
+
+enum Browsers {
+    Gecko,
+    WebKit,
+    MS,
 }

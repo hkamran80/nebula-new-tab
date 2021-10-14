@@ -48,11 +48,26 @@
                 );
             }
         </style>
+
+        <script
+            src="https://unpkg.com/alpinejs@3.4.2/dist/cdn.min.js"
+            defer
+        ></script>
     </head>
 
     <body class="antialiased bg-white text-gray-100 tracking-tight">
         <div class="flex flex-col min-h-screen overflow-hidden">
-            <main class="flex-grow">
+            <main
+                class="
+                    flex-grow
+                    h-32
+                    scrollbar-thin
+                    scrollbar-thumb-nebula-purple
+                    scrollbar-track-nebula-purple-dark
+                    overflow-y-scroll
+                    scrollbar-thumb-rounded-full scrollbar-track-rounded-full
+                "
+            >
                 <section class="relative min-h-screen">
                     <div class="max-w-6xl mx-auto px-4 sm:px-6">
                         <div class="pt-20 md:pt-32">
@@ -81,7 +96,8 @@
                                     <div
                                         id="download-buttons"
                                         class="
-                                            md:mt-8
+                                            mt-8
+                                            md:space-x-4
                                             max-w-xs
                                             mx-auto
                                             sm:max-w-none
@@ -117,7 +133,6 @@
                                             class="
                                                 mt-3
                                                 text-center
-                                                md:ml-5
                                                 flex
                                                 items-center
                                                 bg-white
@@ -135,7 +150,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="mt-10">
+                                    <div class="mt-10 space-x-4">
                                         <a
                                             href="https://github.com/hkamran80/nebula-new-tab"
                                             target="_blank"
@@ -148,6 +163,32 @@
                                             "
                                         >
                                             View on GitHub
+                                        </a>
+
+                                        <a
+                                            href="#features"
+                                            class="
+                                                text-center
+                                                bg-purple-900
+                                                p-2
+                                                px-4
+                                                rounded-md
+                                            "
+                                        >
+                                            View Features
+                                        </a>
+
+                                        <a
+                                            href="#changelog"
+                                            class="
+                                                text-center
+                                                bg-purple-900
+                                                p-2
+                                                px-4
+                                                rounded-md
+                                            "
+                                        >
+                                            View Changelog
                                         </a>
                                     </div>
                                 </div>
@@ -169,7 +210,7 @@
                     </div>
                 </section>
 
-                <section id="features" class="relative bg-white">
+                <section id="features" class="relative bg-nebula-purple-dark">
                     <div
                         class="
                             max-w-7xl
@@ -181,7 +222,7 @@
                         "
                     >
                         <div class="max-w-3xl mx-auto text-center">
-                            <h2 class="text-3xl font-extrabold text-gray-900">
+                            <h2 class="text-3xl font-extrabold text-gray-100">
                                 Features
                             </h2>
                         </div>
@@ -220,14 +261,13 @@
                                             text-lg
                                             leading-6
                                             font-medium
-                                            text-gray-900
+                                            text-gray-100
                                         "
                                     >
                                         Time and Date
                                     </dt>
-                                    <dd class="mt-2 text-base text-gray-500">
-                                        One of two very important features of
-                                        Nebula
+                                    <dd class="mt-2 text-base text-gray-400">
+                                        A key feature of Nebula
                                     </dd>
                                 </div>
                             </div>
@@ -255,52 +295,12 @@
                                             text-lg
                                             leading-6
                                             font-medium
-                                            text-gray-900
-                                        "
-                                    >
-                                        24-hour Time
-                                    </dt>
-                                    <dd class="mt-2 text-base text-gray-500">
-                                        An essential feature in many people's
-                                        eyes
-
-                                        <p class="text-sm mt-1">
-                                            This feature can be turned on from
-                                            the settings menu
-                                        </p>
-                                    </dd>
-                                </div>
-                            </div>
-
-                            <div class="flex">
-                                <svg
-                                    class="flex-shrink-0 h-6 w-6 text-green-500"
-                                    x-description="Heroicon name: check"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M5 13l4 4L19 7"
-                                    ></path>
-                                </svg>
-                                <div class="ml-3">
-                                    <dt
-                                        class="
-                                            text-lg
-                                            leading-6
-                                            font-medium
-                                            text-gray-900
+                                            text-gray-100
                                         "
                                     >
                                         Background Images
                                     </dt>
-                                    <dd class="mt-2 text-base text-gray-500">
+                                    <dd class="mt-2 text-base text-gray-400">
                                         Powered by
                                         <a
                                             href="https://unsplash.com/?utm_source=nebula-new-tab&utm_medium=referral"
@@ -357,13 +357,59 @@
                                             text-lg
                                             leading-6
                                             font-medium
-                                            text-gray-900
+                                            text-gray-100
                                         "
                                     >
                                         Top Sites Integration
                                     </dt>
-                                    <dd class="mt-2 text-base text-gray-500">
+                                    <dd class="mt-2 text-base text-gray-400">
                                         View your top visited sites in Nebula
+
+                                        <p class="text-sm mt-1">
+                                            This feature can be turned on from
+                                            the settings menu
+                                        </p>
+
+                                        <p class="text-sm mt-1">
+                                            This feature is not currently
+                                            available and will be released with
+                                            Nebula 1.0
+                                        </p>
+                                    </dd>
+                                </div>
+                            </div>
+
+                            <div class="flex">
+                                <svg
+                                    class="flex-shrink-0 h-6 w-6 text-green-500"
+                                    x-description="Heroicon name: check"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"
+                                    ></path>
+                                </svg>
+                                <div class="ml-3">
+                                    <dt
+                                        class="
+                                            text-lg
+                                            leading-6
+                                            font-medium
+                                            text-gray-100
+                                        "
+                                    >
+                                        24-hour Time
+                                    </dt>
+                                    <dd class="mt-2 text-base text-gray-400">
+                                        An essential feature in many people's
+                                        eyes
 
                                         <p class="text-sm mt-1">
                                             This feature can be turned on from
@@ -371,6 +417,188 @@
                                         </p>
                                     </dd>
                                 </div>
+                            </div>
+                        </dl>
+                    </div>
+                </section>
+
+                <section
+                    id="changelog"
+                    class="
+                        relative
+                        max-w-7xl
+                        mx-auto
+                        py-12
+                        px-4
+                        sm:py-16 sm:px-6
+                        lg:px-8
+                    "
+                    x-data="{ openPanel: 0 }"
+                >
+                    <div class="max-w-3xl mx-auto divide-y-2 divide-gray-200">
+                        <h2
+                            class="
+                                text-3xl
+                                font-extrabold
+                                text-gray-100 text-center
+                            "
+                        >
+                            Changelog
+                        </h2>
+                        <dl class="mt-6 space-y-6 divide-y divide-gray-200">
+                            <div class="pt-6">
+                                <dt class="text-lg">
+                                    <button
+                                        x-description="Expand/collapse question button"
+                                        @click="openPanel = (openPanel === 0 ? null : 0)"
+                                        class="
+                                            text-left
+                                            w-full
+                                            flex
+                                            justify-between
+                                            items-start
+                                            text-gray-400
+                                        "
+                                        x-bind:aria-expanded="openPanel === 0"
+                                    >
+                                        <div>
+                                            <span
+                                                class="
+                                                    font-medium
+                                                    text-gray-100
+                                                "
+                                            >
+                                                Version 1.0 (Alpha)
+                                            </span>
+                                            <span class="mx-1"> • </span>
+                                            <span class="text-gray-400">
+                                                Not Yet Released
+                                            </span>
+                                            <!-- <span class="mx-1"> • </span>
+                                            <span class="text-gray-400">
+                                                First Full Release
+                                            </span> -->
+                                        </div>
+                                        <span
+                                            class="ml-6 h-7 flex items-center"
+                                        >
+                                            <svg
+                                                class="
+                                                    -rotate-180
+                                                    h-6
+                                                    w-6
+                                                    transform
+                                                "
+                                                x-description="Heroicon name: chevron-down"
+                                                x-state:on="Open"
+                                                x-state:off="Closed"
+                                                x-bind:class="{ '-rotate-180': openPanel === 0, 'rotate-0': !(openPanel === 0) }"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </dt>
+                                <dd class="mt-2 pr-12" x-show="openPanel === 0">
+                                    <div class="text-base text-gray-300">
+                                        <ul class="list-disc list-inside">
+                                            <li>Top Sites Integration</li>
+                                            <li>
+                                                Settings Menu (24-hour time, top
+                                                sites toggle, background
+                                                refresh)
+                                            </li>
+                                            <li>Photo attribution</li>
+                                            <li>Unsplash API</li>
+                                        </ul>
+                                    </div>
+                                </dd>
+                            </div>
+
+                            <div class="pt-6">
+                                <dt class="text-lg">
+                                    <button
+                                        x-description="Expand/collapse question button"
+                                        @click="openPanel = (openPanel === 1 ? null : 1)"
+                                        class="
+                                            text-left
+                                            w-full
+                                            flex
+                                            justify-between
+                                            items-start
+                                            text-gray-400
+                                        "
+                                        x-bind:aria-expanded="openPanel === 1"
+                                    >
+                                        <div>
+                                            <span
+                                                class="
+                                                    font-medium
+                                                    text-gray-100
+                                                "
+                                            >
+                                                Version 0.9.2
+                                            </span>
+                                            <span class="mx-1"> • </span>
+                                            <span class="text-gray-400">
+                                                October 3, 2021
+                                            </span>
+                                            <span class="mx-1"> • </span>
+                                            <span class="text-gray-400">
+                                                Alpha Release
+                                            </span>
+                                        </div>
+                                        <span
+                                            class="ml-6 h-7 flex items-center"
+                                        >
+                                            <svg
+                                                class="
+                                                    -rotate-180
+                                                    h-6
+                                                    w-6
+                                                    transform
+                                                "
+                                                x-description="Heroicon name: chevron-down"
+                                                x-state:on="Open"
+                                                x-state:off="Closed"
+                                                x-bind:class="{ '-rotate-180': openPanel === 1, 'rotate-0': !(openPanel === 1) }"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </dt>
+                                <dd class="mt-2 pr-12" x-show="openPanel === 1">
+                                    <div class="text-base text-gray-300">
+                                        <ul class="list-disc list-inside">
+                                            <li>Time and date</li>
+                                            <li>
+                                                Refreshable background images
+                                            </li>
+                                            <li>24-hour time</li>
+                                        </ul>
+                                    </div>
+                                </dd>
                             </div>
                         </dl>
                     </div>

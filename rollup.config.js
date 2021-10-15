@@ -6,6 +6,8 @@ import execute from "rollup-plugin-execute";
 import { terser } from "rollup-plugin-terser";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 
+import { readFileSync } from "fs";
+
 const baseConfig = createBasicConfig();
 
 export default merge(baseConfig, {
@@ -20,7 +22,17 @@ export default merge(baseConfig, {
         terser(),
         copy({
             targets: [
-                { src: "src/manifest.json", dest: "dist" },
+                {
+                    src: "src/manifest.json",
+                    dest: "dist",
+                    transform: (contents) =>
+                        contents
+                            .toString()
+                            .replace(
+                                "__NEBULA_VERSION_NAME__",
+                                JSON.parse(readFileSync("package.json")).version
+                            ),
+                },
                 {
                     src: "./node_modules/webextension-polyfill/dist/browser-polyfill.js",
                     dest: "dist",
@@ -45,7 +57,7 @@ export default merge(baseConfig, {
                 {
                     src: "./node_modules/tippy.js/dist/tippy.umd.js.map",
                     dest: "dist",
-                    transform: (contents, _) =>
+                    transform: (contents) =>
                         contents.toString().replace("tippy.umd.js", "tippy.js"),
                 },
                 { src: "./node_modules/tippy.js/dist/tippy.css", dest: "dist" },
@@ -55,6 +67,14 @@ export default merge(baseConfig, {
                     src: "build/src/index.js",
                     dest: "dist",
                     rename: "z_index.js", // Needed to ensure that tippy.js and popper are imported first
+                    transform: (contents) =>
+                        contents
+                            .toString()
+                            .replace(
+                                "__NEBULA_VERSION__",
+                                JSON.parse(readFileSync("src/manifest.json"))
+                                    .version
+                            ),
                 },
             ],
             hook: "generateBundle",

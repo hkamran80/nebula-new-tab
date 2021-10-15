@@ -4,23 +4,31 @@ const date = document.getElementById("date");
 const photographer = document.getElementById(
     "photographer"
 ) as HTMLAnchorElement;
-const topSitesContainer = document.getElementById("topSites");
 const attribution = document.getElementById("attribution");
+const topSitesContainer = document.getElementById("topSites");
 const settingsButton = document.getElementById("settings-button");
 const settingsPanelTemplate = document.getElementById(
     "settings-panel-template"
 );
+const versionElement = document.getElementById("nebula-version");
+
 const hourModeSwitchSelector = ".hour-mode-switch";
 const topSitesSwitchSelector = ".top-sites-switch";
 const newBackgroundButtonSelector = ".new-background-button";
 const newBackgroundButtonAnimationSelector = ".new-background-button--spin";
 
-// Please don't abuse this
+// Please don't use this
 const proxyUrl = "https://nebula-unsplash-proxy.hkamran-workers.workers.dev";
+const NEBULA_VERSION = "__NEBULA_VERSION__";
 
 // Initialization
 if (container) {
     const lastUpdated = browser.storage.local.get("lastUpdated");
+
+    if (versionElement) {
+        versionElement.textContent = NEBULA_VERSION;
+    }
+
     lastUpdated.then(
         ({ lastUpdated }) => {
             // 12 hours
@@ -51,8 +59,6 @@ if (container) {
                             container.style.backgroundImage = `url('${dataUrl}')`;
                         });
                     }
-
-                    toggleTopSites(true);
                 },
                 () =>
                     console.error(
@@ -91,6 +97,12 @@ setTimeout((): void => {
 
     if (settingsButton) {
         settingsButton.classList.remove("opacity-0");
+    }
+
+    if (topSitesContainer) {
+        getTopSiteValue((topSitesValue: boolean) => {
+            topSitesToggle(topSitesValue);
+        });
     }
 }, 300);
 
@@ -142,13 +154,17 @@ if (settingsButton && settingsPanelTemplate) {
         allowHTML: true,
         interactive: true,
         onShown(instance: any) {
-            getUserHour((twelveHour: boolean) => {
-                $(hourModeSwitchSelector).prop("checked", !twelveHour);
-            });
+            getUserHour((twelveHour: boolean) =>
+                $(hourModeSwitchSelector).prop("checked", !twelveHour)
+            );
+
+            getTopSiteValue((topSitesValue: boolean) =>
+                $(topSitesSwitchSelector).prop("checked", topSitesValue)
+            );
 
             $(hourModeSwitchSelector)
                 .off("click")
-                .on("click", function () {
+                .on("click", () =>
                     getUserHour((twelveHour: boolean) => {
                         browser.storage.local.set({
                             hourStatus: twelveHour ? "24" : "12",
@@ -157,12 +173,18 @@ if (settingsButton && settingsPanelTemplate) {
                         if (time) {
                             time.textContent = getTime(!twelveHour);
                         }
-                    });
-                });
+                    })
+                );
 
             $(topSitesSwitchSelector)
                 .off("click")
-                .on("click", () => toggleTopSites());
+                .on("click", () =>
+                    getTopSiteValue((topSitesValue: boolean) => {
+                        browser.storage.local.set({ topSites: !topSitesValue });
+
+                        topSitesToggle(!topSitesValue);
+                    })
+                );
 
             $(newBackgroundButtonSelector)
                 .off("click")
@@ -196,24 +218,28 @@ function getUserHour(callback: Function): void {
     });
 }
 
-function toggleTopSites(firstRun?: boolean): void {
-    const topSitesData = browser.storage.local.get({ topSites: false });
-    console.debug(topSitesData);
-    topSitesData.then((topSiteValue) => {
-        if (topSiteValue.topSites) {
-            loadTopSites();
+function getTopSiteValue(callback: Function): void {
+    const storageData = browser.storage.local.get("topSites");
+    storageData.then((storageValue: any) => {
+        if (storageValue.topSites) {
+            callback(storageValue.topSites === true);
         } else {
-            unloadTopSites();
-        }
-
-        if (!firstRun) {
-            browser.storage.local.set({ topSites: !topSiteValue.topSites });
+            callback(false);
         }
     });
 }
 
+function topSitesToggle(topSitesValue: boolean): void {
+    if (topSitesValue) {
+        unloadTopSites();
+        loadTopSites();
+    } else {
+        unloadTopSites();
+    }
+}
+
 function unloadTopSites(): void {
-    if (topSitesContainer) {
+    if (topSitesContainer && topSitesContainer.innerHTML !== "") {
         topSitesContainer.textContent = "";
     }
 }

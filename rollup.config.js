@@ -57,6 +57,7 @@ export default merge(baseConfig, {
                 {
                     src: "./node_modules/tippy.js/dist/tippy.umd.js.map",
                     dest: "dist",
+                    rename: "tippy.js.map",
                     transform: (contents) =>
                         contents.toString().replace("tippy.umd.js", "tippy.js"),
                 },

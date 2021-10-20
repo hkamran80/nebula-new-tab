@@ -19,7 +19,7 @@
 7. Enjoy Nebula!
 
 ### Microsoft Edge
-Microsoft is currently reviewing Nebula, this can take up to seven business days.
+[![Get Nebula New Tab on Microsoft Edge](docs/get-addon-edge.png)](https://microsoftedge.microsoft.com/addons/detail/iagkoeigpdjjchjinnjjjgkanpcmknhj)
 
 ### Opera and Vivaldi
 Not supported
@@ -32,5 +32,5 @@ Not supported
 
 ## Preparing for Release
 1. Run `npm run build:extension:screenshot`
-2. Take screenshots for Chrome, Firefox, Edge, and Brave
-3. Run `npm run build:extension`
+2. Take screenshots for Chrome, Firefox, and Edge
+3. Run `npm run build:extension` to generate the final ZIP file

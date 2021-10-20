@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Nebula New Tab",
     "short_name": "Nebula",
-    "version": "0.9.10.1",
+    "version": "1.0.0",
     "version_name": "__NEBULA_VERSION_NAME__",
 
     "description": "A clean and simple new tab page",
@@ -33,6 +33,7 @@
     "chrome_url_overrides": {
         "newtab": "index.html"
     },
+    "web_accessible_resources": ["assets/*", "*.js.map"],
     "permissions": ["storage", "topSites"],
     "browser_specific_settings": { "gecko": { "strict_min_version": "52.0a1" } }
 }

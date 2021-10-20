@@ -1,6 +1,6 @@
 {
     "name": "nebula-new-tab",
-    "version": "1.0.0-alpha.3",
+    "version": "1.0.0",
     "private": true,
     "description": "A clean and simple new tab page",
     "repository": {
@@ -12,9 +12,10 @@
         "dev:chromium": "web-ext run --source-dir dist --target chromium",
         "dev:opera": "web-ext run --source-dir dist --target chromium --chromium-binary /Applications/Opera.app/Contents/MacOS/Opera",
         "dev:edge": "web-ext run --source-dir dist --target chromium --chromium-binary '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge'",
-        "build": "rimraf dist build && mkdir build && tsc && rollup -c rollup.config.js",
-        "build:watch": "onchange -i 'src/*' -- npm run build",
-        "build:extension": "rimraf web-ext-artifacts && npm run build && web-ext build --source-dir dist",
+        "build": "rimraf dist build && mkdir build && tsc && SCREENSHOT_MODE=${SCREENSHOT_MODE} rollup -c rollup.config.js",
+        "build:watch": "onchange -i 'src/*' -- SCREENSHOT_MODE=false npm run build",
+        "build:extension": "rimraf web-ext-artifacts && SCREENSHOT_MODE=false npm run build && web-ext build --source-dir dist; node scripts/renameExtensionBuild.js",
+        "build:extension:screenshot": "rimraf web-ext-artifacts && SCREENSHOT_MODE=true npm run build && web-ext build --source-dir dist; node scripts/renameExtensionBuild.js",
         "prepare": "husky install"
     },
     "author": "H. Kamran",

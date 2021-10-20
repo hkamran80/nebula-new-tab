@@ -21,6 +21,21 @@ const newBackgroundButtonAnimationSelector = ".new-background-button--spin";
 const proxyUrl = "https://nebula-unsplash-proxy.hkamran-workers.workers.dev";
 const NEBULA_VERSION = "__NEBULA_VERSION__";
 
+const SCREENSHOT_MODE = false;
+
+// Models
+interface UnsplashResponse {
+    photographer: string;
+    photographerUrl: string;
+    imageUrl: string;
+}
+
+enum Browsers {
+    Gecko,
+    WebKit,
+    MS,
+}
+
 // Initialization
 if (container) {
     const lastUpdated = browser.storage.local.get("lastUpdated");
@@ -29,45 +44,67 @@ if (container) {
         versionElement.textContent = NEBULA_VERSION;
     }
 
-    lastUpdated.then(
-        ({ lastUpdated }) => {
-            // 12 hours
-            if (
-                new Date().getTime() - new Date(lastUpdated).getTime() >=
-                43200000
-            ) {
-                saveNewBackgroundImage();
-            }
+    if (getBrowser() == Browsers.WebKit) {
+        let icon = document.createElement("link");
+        icon.rel = "icon";
+        icon.href = "/assets/icons/logo-masked48.png";
 
-            const backgroundImage = browser.storage.local.get([
-                "backgroundImage",
-                "photographerName",
-                "photographerUrl",
-            ]);
-            backgroundImage.then(
-                (data: any) => {
-                    if (data.backgroundImage) {
-                        container.style.backgroundImage = `url('${data.backgroundImage}')`;
+        let shortcutIcon = document.createElement("link");
+        shortcutIcon.rel = "shortcut icon";
+        shortcutIcon.href = "/assets/icons/logo-masked48.png";
 
-                        setAttribution({
-                            photographer: data.photographerName,
-                            photographerUrl: data.photographerUrl,
-                            imageUrl: "",
-                        });
-                    } else {
-                        saveNewBackgroundImage((dataUrl: string) => {
-                            container.style.backgroundImage = `url('${dataUrl}')`;
-                        });
-                    }
-                },
-                () =>
-                    console.error(
-                        "Error occurred when setting background image"
-                    )
-            );
-        },
-        () => console.error("Error occurred when getting last updated time")
-    );
+        document.head.appendChild(icon);
+        document.head.appendChild(shortcutIcon);
+    }
+
+    if (!SCREENSHOT_MODE) {
+        lastUpdated.then(
+            ({ lastUpdated }) => {
+                // 12 hours
+                if (
+                    new Date().getTime() - new Date(lastUpdated).getTime() >=
+                    43200000
+                ) {
+                    saveNewBackgroundImage();
+                }
+
+                const backgroundImage = browser.storage.local.get([
+                    "backgroundImage",
+                    "photographerName",
+                    "photographerUrl",
+                ]);
+                backgroundImage.then(
+                    (data: any) => {
+                        if (data.backgroundImage) {
+                            container.style.backgroundImage = `url('${data.backgroundImage}')`;
+
+                            setAttribution({
+                                photographer: data.photographerName,
+                                photographerUrl: data.photographerUrl,
+                                imageUrl: "",
+                            });
+                        } else {
+                            saveNewBackgroundImage((dataUrl: string) => {
+                                container.style.backgroundImage = `url('${dataUrl}')`;
+                            });
+                        }
+                    },
+                    () =>
+                        console.error(
+                            "Error occurred when setting background image"
+                        )
+                );
+            },
+            () => console.error("Error occurred when getting last updated time")
+        );
+    } else {
+        container.style.backgroundImage = `url('https://images.unsplash.com/photo-1528353518104-dbd48bee7bc4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3132&q=80')`;
+        setAttribution({
+            photographer: "Chan Hoi",
+            photographerUrl: "https://unsplash.com/@jokerhoi",
+            imageUrl: "",
+        });
+    }
 }
 
 // Initialization
@@ -76,19 +113,29 @@ setTimeout((): void => {
 
     if (time) {
         time.classList.remove("opacity-0");
-        getUserHour(
-            (twelveHour: boolean) => (time.textContent = getTime(twelveHour))
-        );
+
+        if (!SCREENSHOT_MODE) {
+            getUserHour(
+                (twelveHour: boolean) =>
+                    (time.textContent = getTime(twelveHour))
+            );
+        } else {
+            time.textContent = "9:45 AM";
+        }
     }
 
     if (date) {
         date.classList.remove("opacity-0");
-        date.textContent = d.toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
+        if (!SCREENSHOT_MODE) {
+            date.textContent = d.toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
+        } else {
+            date.textContent = "Tuesday, October 19, 2021";
+        }
     }
 
     if (attribution) {
@@ -106,44 +153,46 @@ setTimeout((): void => {
     }
 }, 300);
 
-// Intervals
-// Time Interval
-setInterval((): void => {
-    if (time) {
-        getUserHour((twelveHour: boolean) => {
-            time.textContent = getTime(twelveHour);
-        });
-    }
-    // 1000 ms = 1 second
-}, 1000);
-
-// Date Interval
-setInterval((): void => {
-    if (date) {
-        const d = new Date();
-        date.textContent = d.toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    }
-
-    const lastUpdated = browser.storage.local.get("lastUpdated");
-    lastUpdated.then(({ lastUpdated }) => {
-        if (
-            new Date().getTime() - new Date(lastUpdated).getTime() >=
-            86400000
-        ) {
-            if (container) {
-                saveNewBackgroundImage((dataUrl: string) => {
-                    container.style.backgroundImage = `url('${dataUrl}')`;
-                });
-            }
+if (!SCREENSHOT_MODE) {
+    // Intervals
+    // Time Interval
+    setInterval((): void => {
+        if (time) {
+            getUserHour((twelveHour: boolean) => {
+                time.textContent = getTime(twelveHour);
+            });
         }
-    });
-    // 3600000 ms = 1 hour
-}, 3600000);
+        // 1000 ms = 1 second
+    }, 1000);
+
+    // Date Interval
+    setInterval((): void => {
+        if (date) {
+            const d = new Date();
+            date.textContent = d.toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
+        }
+
+        const lastUpdated = browser.storage.local.get("lastUpdated");
+        lastUpdated.then(({ lastUpdated }) => {
+            if (
+                new Date().getTime() - new Date(lastUpdated).getTime() >=
+                86400000
+            ) {
+                if (container) {
+                    saveNewBackgroundImage((dataUrl: string) => {
+                        container.style.backgroundImage = `url('${dataUrl}')`;
+                    });
+                }
+            }
+        });
+        // 3600000 ms = 1 hour
+    }, 3600000);
+}
 
 // Time Mode Switcher Button, Settings Panel
 if (settingsButton && settingsPanelTemplate) {
@@ -298,22 +347,6 @@ function loadTopSites(): void {
     }
 }
 
-async function getFaviconUrl(host: string): Promise<string> {
-    const apiRequest = await fetch(
-        `http://favicongrabber.com/api/grab/${host}`
-    );
-
-    const apiJson = await apiRequest.json();
-    if (apiJson) {
-        console.debug(apiJson);
-        console.debug(apiJson.icons[0]);
-        console.debug(apiJson.icons[0].src);
-        return apiJson.icons[0].src;
-    }
-
-    throw new Error("Unable to retrieve favicon URL");
-}
-
 function getTime(twelveHourTime: boolean): string {
     const d = new Date();
 
@@ -428,17 +461,4 @@ function getBrowser(): Browsers | null {
         default:
             return null;
     }
-}
-
-// Models
-interface UnsplashResponse {
-    photographer: string;
-    photographerUrl: string;
-    imageUrl: string;
-}
-
-enum Browsers {
-    Gecko,
-    WebKit,
-    MS,
 }

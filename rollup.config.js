@@ -75,6 +75,13 @@ export default merge(baseConfig, {
                                 "__NEBULA_VERSION__",
                                 JSON.parse(readFileSync("src/manifest.json"))
                                     .version
+                            )
+                            .replace("// @ts-ignore\n", "")
+                            .replace(
+                                "const SCREENSHOT_MODE = false;",
+                                process.env.SCREENSHOT_MODE === "true"
+                                    ? "const SCREENSHOT_MODE = true;"
+                                    : "const SCREENSHOT_MODE = false;"
                             ),
                 },
             ],

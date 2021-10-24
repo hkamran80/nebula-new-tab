@@ -294,6 +294,7 @@ function unloadTopSites(): void {
 }
 
 function loadTopSites(): void {
+    // Firefox-based Browsers
     if (getBrowser() === Browsers.Gecko) {
         browser.topSites
             .get({ includeFavicon: true, limit: 5 })
@@ -327,15 +328,20 @@ function loadTopSites(): void {
 
                 const img = document.createElement("img");
                 img.className = "w-6";
-                toDataURL(
-                    `https://api.faviconkit.com/${new URL(site.url).host}`
-                )
-                    .then((dataUrl) => (img.src = dataUrl))
-                    .catch(
-                        () =>
-                            (img.src =
-                                "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-globe'%3e%3ccircle cx='12' cy='12' r='10'%3e%3c/circle%3e%3cline x1='2' y1='12' x2='22' y2='12'%3e%3c/line%3e%3cpath d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'%3e%3c/path%3e%3c/svg%3e")
-                    );
+                browser.storage.local.get("topSitesFavicons").then(
+                    (storageResponse) =>
+                        console.debug(storageResponse.topSitesFavicons),
+                    () => console.debug("No content")
+                );
+                getFavicon(
+                    new URL(site.url).host,
+                    (dataUrl: string) => (img.src = dataUrl)
+                );
+                browser.storage.local.get("topSitesFavicons").then(
+                    (storageResponse) =>
+                        console.debug(storageResponse.topSitesFavicons),
+                    () => console.debug("No content")
+                );
 
                 a.appendChild(img);
 
@@ -345,6 +351,50 @@ function loadTopSites(): void {
             });
         });
     }
+}
+
+function getFavicon(siteHost: string, callback: Function): void {
+    browser.storage.local.get("topSitesFavicons").then(
+        (storageResponse) => {
+            if (
+                storageResponse.topSitesFavicons &&
+                Object.keys(storageResponse.topSitesFavicons).indexOf(
+                    siteHost
+                ) !== -1
+            ) {
+                callback(storageResponse.topSitesFavicons[`${siteHost}`]);
+            } else {
+                toDataURL(`https://api.faviconkit.com/${siteHost}`)
+                    .then((dataUrl) => {
+                        browser.storage.local.set({
+                            topSitesFavicons: {
+                                ...storageResponse.topSitesFavicons,
+                                [siteHost]: dataUrl,
+                            },
+                        });
+                        callback(dataUrl);
+                    })
+                    .catch(() =>
+                        callback(
+                            "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-globe'%3e%3ccircle cx='12' cy='12' r='10'%3e%3c/circle%3e%3cline x1='2' y1='12' x2='22' y2='12'%3e%3c/line%3e%3cpath d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'%3e%3c/path%3e%3c/svg%3e"
+                        )
+                    );
+            }
+        },
+        () =>
+            toDataURL(`https://api.faviconkit.com/${siteHost}`)
+                .then((dataUrl) => {
+                    browser.storage.local.set({
+                        topSitesFavicons: { [siteHost]: dataUrl },
+                    });
+                    callback(dataUrl);
+                })
+                .catch(() =>
+                    callback(
+                        "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-globe'%3e%3ccircle cx='12' cy='12' r='10'%3e%3c/circle%3e%3cline x1='2' y1='12' x2='22' y2='12'%3e%3c/line%3e%3cpath d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'%3e%3c/path%3e%3c/svg%3e"
+                    )
+                )
+    );
 }
 
 function getTime(twelveHourTime: boolean): string {

@@ -2,6 +2,7 @@ node_modules
 build
 dist
 web-ext-artifacts
+screenshots
 
 **/.DS_Store
 .dccache

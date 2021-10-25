@@ -42,27 +42,10 @@ export default merge(baseConfig, {
                     dest: "dist",
                 },
                 {
-                    src: "./node_modules/@popperjs/core/dist/umd/popper.js",
+                    src: "./node_modules/alpinejs/dist/cdn.js",
                     dest: "dist",
+                    rename: "alpine.js",
                 },
-                {
-                    src: "./node_modules/@popperjs/core/dist/umd/popper.js.map",
-                    dest: "dist",
-                },
-                {
-                    src: "./node_modules/tippy.js/dist/tippy.umd.js",
-                    dest: "dist",
-                    rename: "tippy.js",
-                },
-                {
-                    src: "./node_modules/tippy.js/dist/tippy.umd.js.map",
-                    dest: "dist",
-                    rename: "tippy.js.map",
-                    transform: (contents) =>
-                        contents.toString().replace("tippy.umd.js", "tippy.js"),
-                },
-                { src: "./node_modules/tippy.js/dist/tippy.css", dest: "dist" },
-                { src: "./node_modules/jquery/dist/jquery.js", dest: "dist" },
                 { src: "assets", dest: "dist" },
                 {
                     src: "build/src/index.js",

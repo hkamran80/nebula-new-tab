@@ -9,6 +9,10 @@
         url("assets/fonts/Quicksand-Regular.ttf") format("truetype");
 }
 
+[x-cloak] {
+    display: none !important;
+}
+
 .tippy-box {
     width: 14rem;
 }
@@ -42,7 +46,7 @@
     border-radius: 2.5px;
 }
 
-[type="checkbox"]:focus{
+[type="checkbox"]:focus {
     outline: 1px solid transparent;
     outline-offset: 1px;
     --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
@@ -57,7 +61,7 @@
         var(--tw-shadow);
 }
 
-[type="checkbox"]:checked{
+[type="checkbox"]:checked {
     border-color: transparent;
     background-color: currentColor;
     background-size: 100% 100%;
@@ -74,7 +78,7 @@
 }
 
 [type="checkbox"]:checked:hover,
-[type="checkbox"]:checked:focus{
+[type="checkbox"]:checked:focus {
     border-color: transparent;
     background-color: currentColor;
 }

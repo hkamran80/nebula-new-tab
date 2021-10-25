@@ -5,17 +5,23 @@ const photographer = document.getElementById(
     "photographer"
 ) as HTMLAnchorElement;
 const attribution = document.getElementById("attribution");
-const topSitesContainer = document.getElementById("topSites");
+let topSitesContainer = document.getElementById("topSitesCenter");
 const settingsButton = document.getElementById("settings-button");
-const settingsPanelTemplate = document.getElementById(
-    "settings-panel-template"
-);
 const versionElement = document.getElementById("nebula-version");
 
-const hourModeSwitchSelector = ".hour-mode-switch";
-const topSitesSwitchSelector = ".top-sites-switch";
-const newBackgroundButtonSelector = ".new-background-button";
-const newBackgroundButtonAnimationSelector = ".new-background-button--spin";
+const hourModeSwitch = document.getElementById(
+    "hour-mode-switch"
+) as HTMLInputElement;
+const topSitesSwitch = document.getElementById(
+    "top-sites-switch"
+) as HTMLInputElement;
+const topSitesCenterPositionSwitch = document.getElementById(
+    "top-sites-center-position-switch"
+) as HTMLInputElement;
+const newBackgroundButton = document.getElementById("new-background-button");
+const newBackgroundButtonIcon = document.getElementById(
+    "new-background-button-icon"
+);
 
 // Please don't use this
 const proxyUrl = "https://nebula-unsplash-proxy.hkamran-workers.workers.dev";
@@ -147,9 +153,9 @@ setTimeout((): void => {
     }
 
     if (topSitesContainer) {
-        getTopSiteValue((topSitesValue: boolean) => {
-            topSitesToggle(topSitesValue);
-        });
+        getTopSiteValue().then((topSitesValue: boolean) =>
+            topSitesToggle(topSitesValue)
+        );
     }
 }, 300);
 
@@ -195,67 +201,74 @@ if (!SCREENSHOT_MODE) {
 }
 
 // Time Mode Switcher Button, Settings Panel
-if (settingsButton && settingsPanelTemplate) {
-    // Settings Panel
-    // @ts-ignore
-    tippy(settingsButton, {
-        content: settingsPanelTemplate.innerHTML,
-        allowHTML: true,
-        interactive: true,
-        onShown(instance: any) {
-            getUserHour((twelveHour: boolean) =>
-                $(hourModeSwitchSelector).prop("checked", !twelveHour)
-            );
+if (
+    hourModeSwitch &&
+    topSitesSwitch &&
+    topSitesCenterPositionSwitch &&
+    newBackgroundButton &&
+    newBackgroundButtonIcon
+) {
+    // Initialization
+    getUserHour(
+        (twelveHour: boolean) => (hourModeSwitch.checked = !twelveHour)
+    );
 
-            getTopSiteValue((topSitesValue: boolean) =>
-                $(topSitesSwitchSelector).prop("checked", topSitesValue)
-            );
+    if (topSitesContainer) {
+        topSitesCenterPositionSwitch.checked =
+            topSitesContainer.id === "topSitesCenter";
+    }
 
-            $(hourModeSwitchSelector)
-                .off("click")
-                .on("click", () =>
-                    getUserHour((twelveHour: boolean) => {
-                        browser.storage.local.set({
-                            hourStatus: twelveHour ? "24" : "12",
-                        });
+    getTopSiteValue().then(
+        (topSitesValue: boolean) => (topSitesSwitch.checked = topSitesValue)
+    );
 
-                        if (time) {
-                            time.textContent = getTime(!twelveHour);
-                        }
-                    })
-                );
+    // Event Listeners
+    hourModeSwitch.addEventListener("click", () =>
+        getUserHour((twelveHour: boolean) => {
+            browser.storage.local.set({
+                hourStatus: twelveHour ? "24" : "12",
+            });
 
-            $(topSitesSwitchSelector)
-                .off("click")
-                .on("click", () =>
-                    getTopSiteValue((topSitesValue: boolean) => {
-                        browser.storage.local.set({ topSites: !topSitesValue });
+            if (time) {
+                time.textContent = getTime(!twelveHour);
+            }
+        })
+    );
 
-                        topSitesToggle(!topSitesValue);
-                    })
-                );
+    topSitesSwitch.addEventListener("click", () =>
+        getTopSiteValue().then((topSitesValue: boolean) => {
+            browser.storage.local.set({ topSites: !topSitesValue });
+            topSitesToggle(!topSitesValue);
+        })
+    );
 
-            $(newBackgroundButtonSelector)
-                .off("click")
-                .on("click", () => {
-                    $(newBackgroundButtonAnimationSelector).addClass(
-                        "animate-spin"
-                    );
+    topSitesCenterPositionSwitch.addEventListener("click", () => {
+        toggleTopSiteContainer().then(
+            (newPosition: string) =>
+                (topSitesCenterPositionSwitch.checked =
+                    newPosition === "center" ? true : false)
+        );
 
-                    saveNewBackgroundImage((dataUrl: string) => {
-                        if (container) {
-                            container.style.backgroundImage = `url('${dataUrl}')`;
-                            $(newBackgroundButtonAnimationSelector).removeClass(
-                                "animate-spin"
-                            );
-                        }
-                    });
-                });
-        },
+        getTopSiteValue().then((topSitesValue: boolean) => {
+            if (topSitesValue) {
+                unloadTopSites();
+                loadTopSites();
+            }
+        });
+    });
+
+    newBackgroundButton.addEventListener("click", () => {
+        newBackgroundButtonIcon.classList.add("animate-spin");
+
+        saveNewBackgroundImage((dataUrl: string) => {
+            if (container) {
+                container.style.backgroundImage = `url('${dataUrl}')`;
+                newBackgroundButtonIcon.classList.remove("animate-spin");
+            }
+        });
     });
 }
 
-// Functions
 function getUserHour(callback: Function): void {
     const hourStatus = browser.storage.local.get("hourStatus");
     hourStatus.then((hourData: any) => {
@@ -267,15 +280,43 @@ function getUserHour(callback: Function): void {
     });
 }
 
-function getTopSiteValue(callback: Function): void {
-    const storageData = browser.storage.local.get("topSites");
-    storageData.then((storageValue: any) => {
-        if (storageValue.topSites) {
-            callback(storageValue.topSites === true);
-        } else {
-            callback(false);
+async function getTopSiteContainer(): Promise<void> {
+    const storageResponse = await browser.storage.local.get(
+        "topSitesContainer"
+    );
+
+    if (storageResponse.topSitesContainer !== "topLeft") {
+        if (document.getElementById("topSitesCenter")) {
+            topSitesContainer = document.getElementById("topSitesCenter");
         }
-    });
+    } else {
+        if (document.getElementById("topSitesTopLeft")) {
+            topSitesContainer = document.getElementById("topSitesTopLeft");
+        }
+    }
+}
+
+async function toggleTopSiteContainer(): Promise<string> {
+    const currentPosition =
+        topSitesContainer?.id === "topSitesCenter" ? "center" : "topLeft";
+
+    let newPosition = "";
+    if (currentPosition !== "topLeft") {
+        newPosition = "topLeft";
+    } else {
+        newPosition = "center";
+    }
+
+    browser.storage.local.set({ topSitesContainer: newPosition });
+
+    return newPosition;
+}
+
+async function getTopSiteValue(): Promise<boolean> {
+    await getTopSiteContainer();
+
+    const storageResponse = await browser.storage.local.get("topSites");
+    return storageResponse.topSites ? storageResponse.topSites === true : false;
 }
 
 function topSitesToggle(topSitesValue: boolean): void {
@@ -288,68 +329,75 @@ function topSitesToggle(topSitesValue: boolean): void {
 }
 
 function unloadTopSites(): void {
-    if (topSitesContainer && topSitesContainer.innerHTML !== "") {
-        topSitesContainer.textContent = "";
+    const topSitesCenter = document.getElementById("topSitesCenter");
+    const topSitesTopLeft = document.getElementById("topSitesTopLeft");
+
+    if (topSitesCenter && topSitesCenter.innerHTML !== "") {
+        topSitesCenter.textContent = "";
+    }
+
+    if (topSitesTopLeft && topSitesTopLeft.innerHTML !== "") {
+        topSitesTopLeft.textContent = "";
     }
 }
 
 function loadTopSites(): void {
-    // Firefox-based Browsers
-    if (getBrowser() === Browsers.Gecko) {
-        browser.topSites
-            .get({ includeFavicon: true, limit: 5 })
-            .then((topSites) => {
-                console.debug(topSites);
-                topSites.forEach((site) => {
+    if (topSitesContainer) {
+        const linkClassNames =
+            topSitesContainer.id === "topSitesCenter"
+                ? "p-4 bg-black bg-opacity-75 rounded-lg"
+                : "";
+        const imgClassNames =
+            topSitesContainer.id === "topSitesCenter" ? "w-8" : "w-6";
+
+        // Firefox-based Browsers
+        if (getBrowser() === Browsers.Gecko) {
+            browser.topSites
+                .get({ includeFavicon: true, limit: 5 })
+                .then((topSites) => {
+                    topSites.forEach((site) => {
+                        const a = document.createElement("a");
+                        a.href = site.url;
+                        a.title = site.title || "";
+                        a.target = "_blank";
+                        a.className = linkClassNames;
+
+                        if (site.favicon) {
+                            const img = document.createElement("img");
+                            img.className = imgClassNames;
+                            img.src = site.favicon;
+                            a.appendChild(img);
+                        }
+
+                        if (topSitesContainer) {
+                            topSitesContainer.appendChild(a);
+                        }
+                    });
+                });
+        } else {
+            browser.topSites.get().then((topSites) => {
+                topSites.slice(0, 5).forEach((site) => {
                     const a = document.createElement("a");
                     a.href = site.url;
                     a.title = site.title || "";
                     a.target = "_blank";
+                    a.className = linkClassNames;
 
-                    if (site.favicon) {
-                        const img = document.createElement("img");
-                        img.className = "w-6";
-                        img.src = site.favicon;
-                        a.appendChild(img);
-                    }
+                    const img = document.createElement("img");
+                    img.className = imgClassNames;
+                    getFavicon(
+                        new URL(site.url).host,
+                        (dataUrl: string) => (img.src = dataUrl)
+                    );
+
+                    a.appendChild(img);
 
                     if (topSitesContainer) {
                         topSitesContainer.appendChild(a);
                     }
                 });
             });
-    } else {
-        browser.topSites.get().then((topSites) => {
-            topSites.slice(0, 5).forEach((site) => {
-                const a = document.createElement("a");
-                a.href = site.url;
-                a.title = site.title || "";
-                a.target = "_blank";
-
-                const img = document.createElement("img");
-                img.className = "w-6";
-                browser.storage.local.get("topSitesFavicons").then(
-                    (storageResponse) =>
-                        console.debug(storageResponse.topSitesFavicons),
-                    () => console.debug("No content")
-                );
-                getFavicon(
-                    new URL(site.url).host,
-                    (dataUrl: string) => (img.src = dataUrl)
-                );
-                browser.storage.local.get("topSitesFavicons").then(
-                    (storageResponse) =>
-                        console.debug(storageResponse.topSitesFavicons),
-                    () => console.debug("No content")
-                );
-
-                a.appendChild(img);
-
-                if (topSitesContainer) {
-                    topSitesContainer.appendChild(a);
-                }
-            });
-        });
+        }
     }
 }
 

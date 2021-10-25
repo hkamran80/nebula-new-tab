@@ -26,6 +26,7 @@
         "@rollup/plugin-node-resolve": "^13.0.5",
         "@types/jquery": "^3.5.6",
         "@types/webextension-polyfill": "^0.8.0",
+        "alpinejs": "^3.4.2",
         "autoprefixer": "^10.3.6",
         "cpy-cli": "^3.1.1",
         "deepmerge": "^4.2.2",

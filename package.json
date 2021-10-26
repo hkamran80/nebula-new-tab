@@ -1,46 +1,25 @@
 {
-    "name": "nebula-new-tab",
-    "version": "1.1.0-alpha.0",
+    "name": "nebula-new-tab-site",
+    "version": "1.0.0",
     "private": true,
-    "description": "A clean and simple new tab page",
+    "description": "Nebula New Tab - A clean and simple new tab page",
     "repository": {
         "type": "git",
         "url": "https://github.com/hkamran80/nebula-new-tab.git"
     },
     "scripts": {
-        "dev:firefox": "web-ext run --source-dir dist",
-        "dev:chromium": "web-ext run --source-dir dist --target chromium",
-        "dev:opera": "web-ext run --source-dir dist --target chromium --chromium-binary /Applications/Opera.app/Contents/MacOS/Opera",
-        "dev:edge": "web-ext run --source-dir dist --target chromium --chromium-binary '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge'",
-        "build": "rimraf dist build && mkdir build && tsc && SCREENSHOT_MODE=${SCREENSHOT_MODE} rollup -c rollup.config.js",
-        "build:noscreenshot": "SCREENSHOT_MODE=false npm run build",
-        "build:watch": "onchange -i 'src/*' -- npm run build:noscreenshot",
-        "build:extension": "rimraf web-ext-artifacts && npm run build:noscreenshot && web-ext build --source-dir dist; node scripts/renameExtensionBuild.js",
-        "build:extension:screenshot": "rimraf web-ext-artifacts && SCREENSHOT_MODE=true npm run build && web-ext build --source-dir dist; node scripts/renameExtensionBuild.js --screenshot-mode",
+        "build": "tailwindcss -i ./nebula-base.css -c ./tailwind.config.js -o ./nebula.css",
+        "lint": "prettier --tab-width 4 --write ./**/*.{html,css,js,json}",
+        "build:all": "npm run build; npm run lint",
         "prepare": "husky install"
     },
     "author": "H. Kamran",
     "license": "GPLV3",
     "devDependencies": {
-        "@open-wc/building-rollup": "^1.10.0",
-        "@rollup/plugin-node-resolve": "^13.0.5",
-        "@types/webextension-polyfill": "^0.8.0",
-        "alpinejs": "^3.4.2",
         "autoprefixer": "^10.3.6",
-        "cpy-cli": "^3.1.1",
-        "deepmerge": "^4.2.2",
         "husky": "^7.0.0",
-        "onchange": "^7.1.0",
         "prettier": "^2.4.1",
-        "rimraf": "^3.0.2",
-        "rollup": "^2.58.0",
-        "rollup-plugin-bundle-html-thomzz": "^1.2.0",
-        "rollup-plugin-copy": "^3.4.0",
-        "rollup-plugin-execute": "^1.1.1",
         "tailwind-scrollbar": "^1.3.1",
-        "tailwindcss": "^2.2.16",
-        "typescript": "^4.4.3",
-        "web-ext": "^6.4.0",
-        "webextension-polyfill": "^0.8.0"
+        "tailwindcss": "^2.2.16"
     }
 }

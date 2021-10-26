@@ -3,7 +3,6 @@ import { createBasicConfig } from "@open-wc/building-rollup";
 import html from "rollup-plugin-bundle-html-thomzz";
 import copy from "rollup-plugin-copy";
 import execute from "rollup-plugin-execute";
-import { terser } from "rollup-plugin-terser";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 import { readFileSync } from "fs";
@@ -19,7 +18,6 @@ export default merge(baseConfig, {
     },
     plugins: [
         nodeResolve(),
-        terser(),
         copy({
             targets: [
                 {

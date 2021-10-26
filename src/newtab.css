@@ -13,10 +13,6 @@
     display: none !important;
 }
 
-.tippy-box {
-    width: 14rem;
-}
-
 [type="checkbox"],
 [type="radio"] {
     -webkit-appearance: none;

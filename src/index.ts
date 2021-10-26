@@ -349,11 +349,15 @@ function loadTopSites(): void {
                 : "";
         const imgClassNames =
             topSitesContainer.id === "topSitesCenter" ? "w-8" : "w-6";
+        const maxTopSites = topSitesContainer.id === "topSitesCenter" ? 20 : 5;
 
         // Firefox-based Browsers
         if (getBrowser() === Browsers.Gecko) {
             browser.topSites
-                .get({ includeFavicon: true, limit: 5 })
+                .get({
+                    includeFavicon: true,
+                    limit: maxTopSites,
+                })
                 .then((topSites) => {
                     topSites.forEach((site) => {
                         const a = document.createElement("a");
@@ -376,7 +380,7 @@ function loadTopSites(): void {
                 });
         } else {
             browser.topSites.get().then((topSites) => {
-                topSites.slice(0, 5).forEach((site) => {
+                topSites.slice(0, maxTopSites).forEach((site) => {
                     const a = document.createElement("a");
                     a.href = site.url;
                     a.title = site.title || "";

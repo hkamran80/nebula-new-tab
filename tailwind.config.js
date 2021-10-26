@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
     mode: "jit",
-    purge: ["./docs/*.{html,css}"],
+    purge: ["./*.{html,css}"],
     theme: {
         fontFamily: {
             sans: ["Quicksand", ...defaultTheme.fontFamily.sans],

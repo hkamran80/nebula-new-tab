@@ -1,5 +1,8 @@
 node_modules
+build
+dist
 screenshots
+web-ext-artifacts
 
 **/.DS_Store
 .dccache

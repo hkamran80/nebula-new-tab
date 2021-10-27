@@ -491,7 +491,7 @@
                     "
                     x-data="{ openPanel: 0 }"
                 >
-                    <div class="max-w-3xl mx-auto divide-y-2 divide-gray-200">
+                    <div class="max-w-3xl mx-auto">
                         <h2
                             class="
                                 text-3xl
@@ -501,6 +501,7 @@
                         >
                             Changelog
                         </h2>
+
                         <dl class="mt-6 space-y-6 divide-y divide-gray-200">
                             <div class="pt-6">
                                 <dt class="text-lg">
@@ -524,15 +525,11 @@
                                                     text-gray-100
                                                 "
                                             >
-                                                Version 1.0.0
+                                                Version 1.1.0
                                             </span>
                                             <span class="mx-1"> • </span>
                                             <span class="text-gray-400">
-                                                October 19, 2021
-                                            </span>
-                                            <span class="mx-1"> • </span>
-                                            <span class="text-gray-400">
-                                                First Full Release
+                                                Coming Soon
                                             </span>
                                         </div>
                                         <span
@@ -568,15 +565,10 @@
                                 <dd class="mt-2 pr-12" x-show="openPanel === 0">
                                     <div class="text-base text-gray-300">
                                         <ul class="list-disc list-inside">
-                                            <li>Top Sites Integration</li>
-                                            <li>
-                                                Settings Menu (24-hour time, top
-                                                sites toggle, background
-                                                refresh, version number,
-                                                feedback form)
-                                            </li>
-                                            <li>Photo attribution</li>
-                                            <li>Unsplash API</li>
+                                            <li>Improved Top Sites design</li>
+                                            <li>Increase top site limit to 20 when in the center top sites layout</li>
+                                            <li>Added top site favicon caching (non-Firefox browsers)</li>
+                                            <li>Improved settings interface</li>
                                         </ul>
                                     </div>
                                 </dd>
@@ -604,15 +596,15 @@
                                                     text-gray-100
                                                 "
                                             >
-                                                Version 0.9.2
+                                                Version 1.0.0
                                             </span>
                                             <span class="mx-1"> • </span>
                                             <span class="text-gray-400">
-                                                October 3, 2021
+                                                October 19, 2021
                                             </span>
                                             <span class="mx-1"> • </span>
                                             <span class="text-gray-400">
-                                                Alpha Release
+                                                First Full Release
                                             </span>
                                         </div>
                                         <span
@@ -646,6 +638,86 @@
                                     </button>
                                 </dt>
                                 <dd class="mt-2 pr-12" x-show="openPanel === 1">
+                                    <div class="text-base text-gray-300">
+                                        <ul class="list-disc list-inside">
+                                            <li>Top Sites Integration</li>
+                                            <li>
+                                                Settings Menu (24-hour time, top
+                                                sites toggle, background
+                                                refresh, version number,
+                                                feedback form)
+                                            </li>
+                                            <li>Photo attribution</li>
+                                            <li>Unsplash API</li>
+                                        </ul>
+                                    </div>
+                                </dd>
+                            </div>
+
+                            <div class="pt-6">
+                                <dt class="text-lg">
+                                    <button
+                                        x-description="Expand/collapse question button"
+                                        @click="openPanel = (openPanel === 2 ? null : 2)"
+                                        class="
+                                            text-left
+                                            w-full
+                                            flex
+                                            justify-between
+                                            items-start
+                                            text-gray-400
+                                        "
+                                        x-bind:aria-expanded="openPanel === 2"
+                                    >
+                                        <div>
+                                            <span
+                                                class="
+                                                    font-medium
+                                                    text-gray-100
+                                                "
+                                            >
+                                                Version 0.9.2
+                                            </span>
+                                            <span class="mx-1"> • </span>
+                                            <span class="text-gray-400">
+                                                October 3, 2021
+                                            </span>
+                                            <span class="mx-1"> • </span>
+                                            <span class="text-gray-400">
+                                                Alpha Release
+                                            </span>
+                                        </div>
+                                        <span
+                                            class="ml-6 h-7 flex items-center"
+                                        >
+                                            <svg
+                                                class="
+                                                    -rotate-180
+                                                    h-6
+                                                    w-6
+                                                    transform
+                                                "
+                                                x-description="Heroicon name: chevron-down"
+                                                x-state:on="Open"
+                                                x-state:off="Closed"
+                                                x-bind:class="{ '-rotate-180': openPanel === 2, 'rotate-0': !(openPanel === 2) }"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </dt>
+                                <dd class="mt-2 pr-12" x-show="openPanel === 2">
                                     <div class="text-base text-gray-300">
                                         <ul class="list-disc list-inside">
                                             <li>Time and date</li>

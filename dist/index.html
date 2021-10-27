@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>New Tab</title>
+        <meta
+            name="description"
+            content="Welcome to Nebula, your new tab page!"
+        />
+        <link rel="stylesheet" href="/newtab.css" />
+    </head>
+
+    <body class="bg-black">
+        <div
+            id="content"
+            class="
+                min-h-screen
+                flex
+                justify-center
+                bg-no-repeat bg-cover bg-opacity-80
+                relative
+                items-center
+            "
+            x-data="{ 'showModal': false, 'showModalBackground': false }"
+            @keydown.escape="showModal = false; setTimeout(() => showModalBackground = false, 250)"
+            x-cloak=""
+        >
+            <div class="text-center p-4 bg-opacity-80">
+                <h1
+                    id="time"
+                    class="
+                        block
+                        opacity-0
+                        transition-opacity
+                        duration-300
+                        text-8xl text-white
+                    "
+                >
+                    00:00
+                </h1>
+                <h2
+                    id="date"
+                    class="
+                        block
+                        opacity-0
+                        transition-opacity
+                        duration-300
+                        mt-2
+                        text-3xl text-white
+                    "
+                >
+                    Sunday, October 3, 2021
+                </h2>
+
+                <div class="block text-white">
+                    <div
+                        id="topSitesCenter"
+                        class="
+                            flex
+                            space-x-4
+                            justify-center
+                            transition-opacity
+                            duration-300
+                            mt-10
+                        "
+                    ></div>
+                </div>
+            </div>
+
+            <div class="absolute top-7 left-7">
+                <div id="topSitesTopLeft" class="flex space-x-2"></div>
+            </div>
+
+            <div
+                id="attribution"
+                class="
+                    absolute
+                    bottom-7
+                    left-7
+                    text-white text-xs
+                    opacity-0
+                    transition-opacity
+                    duration-300
+                "
+            >
+                <span>
+                    Photo by
+                    <a
+                        id="photographer"
+                        href="https://unsplash.com/@hkamran?utm_source=nebula-new-tab&amp;utm_medium=referral"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="underline"
+                    >
+                        Loading...
+                    </a>
+                    on
+                    <a
+                        href="https://unsplash.com/?utm_source=nebula-new-tab&amp;utm_medium=referral"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="underline"
+                    >
+                        Unsplash
+                    </a>
+                </span>
+            </div>
+
+            <div class="absolute bottom-7 right-7">
+                <button
+                    id="settings-button"
+                    class="ml-3 opacity-0 transition-opacity duration-300 w-4"
+                    title="Open the settings panel"
+                    aria-label="Open the settings panel"
+                    @click="showModal = true; showModalBackground = true;"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="stroke-current stroke-2 text-white"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+                        ></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div
+                class="overflow-auto"
+                x-show="showModal"
+                :class="{ 'absolute inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50': showModalBackground }"
+            >
+                <div
+                    class="
+                        bg-gray-800 bg-opacity-90
+                        text-white
+                        w-11/12
+                        md:max-w-md
+                        mx-auto
+                        rounded-lg
+                        shadow-lg
+                        py-4
+                        text-left
+                        px-6
+                    "
+                    x-show="showModal"
+                    @click.away="showModal = false; setTimeout(() => showModalBackground = false, 250)"
+                    x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="ease-in duration-300"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-90"
+                >
+                    <div class="flex justify-between items-center pb-3">
+                        <p class="text-2xl font-bold">Settings</p>
+
+                        <div
+                            class="cursor-pointer z-50"
+                            @click="showModal = false; setTimeout(() => showModalBackground = false, 250)"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="stroke-current stroke-2 w-6"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="mt-1 space-y-2">
+                        <div class="flex pt-1">
+                            <span class="flex-grow"> 24-hour Time </span>
+                            <input
+                                id="hour-mode-switch"
+                                class="flew-grow-0 inline-block"
+                                type="checkbox"
+                            />
+                        </div>
+
+                        <div class="flex pt-1">
+                            <span class="flex-grow"> Show Top Sites </span>
+                            <input
+                                id="top-sites-switch"
+                                class="flew-grow-0 inline-block"
+                                type="checkbox"
+                            />
+                        </div>
+
+                        <div class="flex pt-1">
+                            <span class="flex-grow"> Centered Top Sites </span>
+                            <input
+                                id="top-sites-center-position-switch"
+                                class="flew-grow-0 inline-block"
+                                type="checkbox"
+                            />
+                        </div>
+
+                        <div id="new-background-button" class="flex pt-1">
+                            <div class="inline-flex">
+                                <span class="mr-3"> Refresh Background </span>
+
+                                <svg
+                                    id="new-background-button-icon"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="stroke-current stroke-2 w-4"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polyline
+                                        points="23 4 23 10 17 10"
+                                    ></polyline>
+                                    <polyline
+                                        points="1 20 1 14 7 14"
+                                    ></polyline>
+                                    <path
+                                        d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+                                    ></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 grid grid-cols-3 gap-2">
+                            <div
+                                class="
+                                    p-4
+                                    bg-gray-900
+                                    rounded-md
+                                    text-center
+                                    justify-center
+                                    items-center
+                                    content-center
+                                "
+                            >
+                                Nebula Version
+                                <span id="nebula-version"></span>
+                            </div>
+
+                            <a
+                                href="https://airtable.com/shr1YN2IDfetHo7gT"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="
+                                    p-4
+                                    bg-gray-900
+                                    rounded-md
+                                    text-center
+                                    justify-center
+                                    items-center
+                                    content-center
+                                "
+                            >
+                                Give Feedback
+                            </a>
+
+                            <a
+                                href="https://discord.gg/Ex8uJvarJb"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="
+                                    p-4
+                                    bg-gray-900
+                                    rounded-md
+                                    text-center
+                                    justify-center
+                                    items-center
+                                    content-center
+                                "
+                            >
+                                Join the Discord
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="/alpine.js"></script>
+        <script type="text/javascript" src="/browser-polyfill.js"></script>
+        <script type="text/javascript" src="/z_index.js"></script>
+    </body>
+</html>

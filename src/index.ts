@@ -349,7 +349,7 @@ function loadTopSites(): void {
                 : "";
         const imgClassNames =
             topSitesContainer.id === "topSitesCenter" ? "w-8" : "w-6";
-        const maxTopSites = topSitesContainer.id === "topSitesCenter" ? 20 : 5;
+        const maxTopSites = topSitesContainer.id === "topSitesCenter" ? 21 : 5;
 
         // Firefox-based Browsers
         if (getBrowser() === Browsers.Gecko) {
@@ -376,6 +376,7 @@ function loadTopSites(): void {
                         a.title = site.title || "";
                         a.target = "_blank";
                         a.className = linkClassNames;
+                        2;
 
                         if (site.favicon) {
                             const img = document.createElement("img");
@@ -424,6 +425,83 @@ function loadTopSites(): void {
                 });
             });
         }
+
+        // const topSites = [
+        //     {
+        //         url: "https://www.music-map.com/",
+        //         title: "Music-Map - The Tourist Map of Music",
+        //     },
+        //     {
+        //         url: "https://traintimes.org.uk/map/tube/schematic/",
+        //         title: "Live map of London Underground trains",
+        //     },
+        //     { url: "https://www.zoomquilt.org/", title: "Zoomquilt" },
+        //     {
+        //         url: "http://hyperphysics.phy-astr.gsu.edu/hbase/index.html",
+        //         title: "HyperPhysics Concepts",
+        //     },
+        //     {
+        //         url: "https://www.mapcrunch.com/",
+        //         title: "MapCrunch - Random Street View",
+        //     },
+        //     { url: "https://pointerpointer.com/", title: "Pointer Pointer" },
+        //     {
+        //         url: "https://ihavenotv.com/",
+        //         title: "Documentaries - watch free online documentaries - ihavenotv.com",
+        //     },
+        //     {
+        //         url: "https://10minutemail.com/",
+        //         title: "10 Minute Mail - Free Anonymous Temporary email - 10 Minute Mail - Free Anonymous Temporary email",
+        //     },
+        //     { url: "http://radiooooo.com/", title: "Radiooooo" },
+        //     {
+        //         url: "https://www.windy.com/?18.730,52.031,3",
+        //         title: "Windy: Wind map & weather forecast",
+        //     },
+        //     {
+        //         url: "http://www.higherlowergame.com/",
+        //         title: "The Higher Lower Game",
+        //     },
+        //     {
+        //         url: "http://endless.horse/",
+        //         title: "hooooooooooooooooooooooooooooooooooooooooooooooooooooooooorse",
+        //     },
+        //     { url: "https://quickdraw.withgoogle.com/", title: "Quick, Draw!" },
+        //     {
+        //         url: "https://archive.org/",
+        //         title: "Internet Archive: Digital Library of Free & Borrowable Books, Movies, Music & Wayback Machine",
+        //     },
+        //     { url: "https://cat-bounce.com/", title: "CAT BOUNCE!" },
+        // ];
+
+        // if (topSitesContainer && topSitesContainer.id === "topSitesCenter") {
+        //     topSitesContainer.classList.add(
+        //         topSites.length >= 1 && topSites.length < 7
+        //             ? `grid-cols-${topSites.length}`
+        //             : "grid-cols-7"
+        //     );
+        // }
+
+        // topSites.slice(0, maxTopSites).forEach((site) => {
+        //     const a = document.createElement("a");
+        //     a.href = site.url;
+        //     a.title = site.title || "";
+        //     a.target = "_blank";
+        //     a.className = linkClassNames;
+
+        //     const img = document.createElement("img");
+        //     img.className = imgClassNames;
+        //     getFavicon(
+        //         new URL(site.url).host,
+        //         (dataUrl: string) => (img.src = dataUrl)
+        //     );
+
+        //     a.appendChild(img);
+
+        //     if (topSitesContainer) {
+        //         topSitesContainer.appendChild(a);
+        //     }
+        // });
     }
 }
 

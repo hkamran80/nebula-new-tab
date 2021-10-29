@@ -359,6 +359,17 @@ function loadTopSites(): void {
                     limit: maxTopSites,
                 })
                 .then((topSites) => {
+                    if (
+                        topSitesContainer &&
+                        topSitesContainer.id === "topSitesCenter"
+                    ) {
+                        topSitesContainer.classList.add(
+                            topSites.length >= 1 && topSites.length < 5
+                                ? `grid-cols-${topSites.length}`
+                                : "grid-cols-5"
+                        );
+                    }
+
                     topSites.forEach((site) => {
                         const a = document.createElement("a");
                         a.href = site.url;
@@ -380,6 +391,17 @@ function loadTopSites(): void {
                 });
         } else {
             browser.topSites.get().then((topSites) => {
+                if (
+                    topSitesContainer &&
+                    topSitesContainer.id === "topSitesCenter"
+                ) {
+                    topSitesContainer.classList.add(
+                        topSites.length >= 1 && topSites.length < 5
+                            ? `grid-cols-${topSites.length}`
+                            : "grid-cols-5"
+                    );
+                }
+
                 topSites.slice(0, maxTopSites).forEach((site) => {
                     const a = document.createElement("a");
                     a.href = site.url;

@@ -18,6 +18,9 @@ const topSitesSwitch = document.getElementById(
 const topSitesCenterPositionSwitch = document.getElementById(
     "top-sites-center-position-switch"
 ) as HTMLInputElement;
+const topSitesDarkBackgroundSwitch = document.getElementById(
+    "top-sites-dark-background-switch"
+) as HTMLInputElement;
 const newBackgroundButton = document.getElementById("new-background-button");
 const newBackgroundButtonIcon = document.getElementById(
     "new-background-button-icon"
@@ -205,6 +208,7 @@ if (
     hourModeSwitch &&
     topSitesSwitch &&
     topSitesCenterPositionSwitch &&
+    topSitesDarkBackgroundSwitch &&
     newBackgroundButton &&
     newBackgroundButtonIcon
 ) {
@@ -220,6 +224,11 @@ if (
 
     getTopSiteValue().then(
         (topSitesValue: boolean) => (topSitesSwitch.checked = topSitesValue)
+    );
+
+    getTopSiteBackground().then(
+        (background: string) =>
+            (topSitesDarkBackgroundSwitch.checked = background === "dark")
     );
 
     // Event Listeners
@@ -242,10 +251,10 @@ if (
         })
     );
 
-    topSitesCenterPositionSwitch.addEventListener("click", () => {
+    topSitesCenterPositionSwitch.addEventListener("click", (evt: Event) => {
         toggleTopSiteContainer().then(
             (newPosition: string) =>
-                (topSitesCenterPositionSwitch.checked =
+                ((evt.target as HTMLInputElement).checked =
                     newPosition === "center" ? true : false)
         );
 
@@ -256,6 +265,19 @@ if (
             }
         });
     });
+
+    topSitesDarkBackgroundSwitch.addEventListener("click", (evt: Event) =>
+        toggleTopSiteBackground().then((background: string) => {
+            (evt.target as HTMLInputElement).checked = background === "dark";
+
+            getTopSiteValue().then((topSitesValue: boolean) => {
+                if (topSitesValue) {
+                    unloadTopSites();
+                    loadTopSites();
+                }
+            });
+        })
+    );
 
     newBackgroundButton.addEventListener("click", () => {
         newBackgroundButtonIcon.classList.add("animate-spin");
@@ -308,8 +330,32 @@ async function toggleTopSiteContainer(): Promise<string> {
     }
 
     browser.storage.local.set({ topSitesContainer: newPosition });
-
     return newPosition;
+}
+
+async function getTopSiteBackground(): Promise<string> {
+    const storageResponse = await browser.storage.local.get(
+        "topSitesBackground"
+    );
+    if (storageResponse.topSitesBackground !== "dark") {
+        return "light";
+    } else {
+        return "dark";
+    }
+}
+
+async function toggleTopSiteBackground(): Promise<string> {
+    const currentBackground = await getTopSiteBackground();
+    let newBackground = "";
+
+    if (currentBackground === "dark") {
+        newBackground = "light";
+    } else {
+        newBackground = "dark";
+    }
+
+    browser.storage.local.set({ topSitesBackground: newBackground });
+    return newBackground;
 }
 
 async function getTopSiteValue(): Promise<boolean> {
@@ -341,11 +387,15 @@ function unloadTopSites(): void {
     }
 }
 
-function loadTopSites(): void {
+async function loadTopSites(): Promise<void> {
     if (topSitesContainer) {
         const linkClassNames =
             topSitesContainer.id === "topSitesCenter"
-                ? "p-4 bg-black bg-opacity-75 rounded-lg"
+                ? `p-4 bg-opacity-75 rounded-lg ${
+                      (await getTopSiteBackground()) === "dark"
+                          ? "bg-black"
+                          : "bg-gray-700"
+                  }`
                 : "";
         const imgClassNames =
             topSitesContainer.id === "topSitesCenter" ? "w-8" : "w-6";

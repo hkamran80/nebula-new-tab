@@ -3,6 +3,7 @@ browser.runtime.onInstalled.addListener(async () => {
         hourStatus: "12",
         topSites: false,
         topSitesContainer: "center",
+        topSitesBackground: "dark",
     });
 
     await browser.tabs.create({});

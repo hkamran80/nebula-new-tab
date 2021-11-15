@@ -529,14 +529,7 @@
                                             </span>
                                             <span class="mx-1"> • </span>
                                             <span class="text-gray-400">
-                                                <a
-                                                    href="https://github.com/hkamran80/nebula-new-tab/releases/tag/1.1.0-beta.0"
-                                                    rel="noopener noreferrer"
-                                                    target="_blank"
-                                                    class="underline"
-                                                >
-                                                    In Beta
-                                                </a>
+                                                November 5, 2021
                                             </span>
                                         </div>
                                         <span
@@ -750,7 +743,8 @@
         </div>
 
         <div
-            x-data="{ 'dismissed': false }"
+            x-data="{ 'dismissed': localStorage.getItem('dismissedUpdateMessage_version1.1') === 'true' }"
+            x-init="$watch('dismissed', val => localStorage.setItem('dismissedUpdateMessage_version1.1', val))"
             class="fixed bottom-0 inset-x-0 pb-2 sm:pb-5"
             :class="{ 'hidden': dismissed }"
         >
@@ -774,7 +768,7 @@
                                 </svg>
                             </span>
                             <p class="ml-3 font-medium text-white truncate">
-                                Nebula 1.1's beta is now available!
+                                Nebula 1.1 is now available!
                             </p>
                         </div>
                         <div
@@ -787,7 +781,7 @@
                             "
                         >
                             <a
-                                href="https://github.com/hkamran80/nebula-new-tab/releases/tag/1.1.0-beta.0"
+                                href="https://github.com/hkamran80/nebula-new-tab/releases/tag/1.1.0"
                                 rel="noopener noreferrer"
                                 target="_blank"
                                 class="

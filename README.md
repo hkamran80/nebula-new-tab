@@ -9,7 +9,7 @@
 <p> </p>
 
 <p align="center">
-<a href="https://addons.mozilla.org/en-US/firefox/addon/nebula-new-tab/" target="_blank">
+<a href="https://addons.mozilla.org/firefox/addon/nebula-new-tab/" target="_blank">
     <img src="docs/get-addon-firefox.png" title="Get Nebula New Tab on Firefox!" />
 </a>
 <a href="https://microsoftedge.microsoft.com/addons/detail/iagkoeigpdjjchjinnjjjgkanpcmknhj" target="_blank">

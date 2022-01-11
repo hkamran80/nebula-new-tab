@@ -402,156 +402,156 @@ async function loadTopSites(): Promise<void> {
         const maxTopSites = topSitesContainer.id === "topSitesCenter" ? 21 : 5;
 
         // Firefox-based Browsers
-        if (getBrowser() === Browsers.Gecko) {
-            browser.topSites
-                .get({
-                    includeFavicon: true,
-                    limit: maxTopSites,
-                })
-                .then((topSites) => {
-                    if (
-                        topSitesContainer &&
-                        topSitesContainer.id === "topSitesCenter"
-                    ) {
-                        topSitesContainer.classList.add(
-                            topSites.length >= 1 && topSites.length < 5
-                                ? `grid-cols-${topSites.length}`
-                                : "grid-cols-5"
-                        );
-                    }
+        // if (getBrowser() === Browsers.Gecko) {
+        //     browser.topSites
+        //         .get({
+        //             includeFavicon: true,
+        //             limit: maxTopSites,
+        //         })
+        //         .then((topSites) => {
+        //             if (
+        //                 topSitesContainer &&
+        //                 topSitesContainer.id === "topSitesCenter"
+        //             ) {
+        //                 topSitesContainer.classList.add(
+        //                     topSites.length >= 1 && topSites.length < 5
+        //                         ? `grid-cols-${topSites.length}`
+        //                         : "grid-cols-5"
+        //                 );
+        //             }
 
-                    topSites.forEach((site) => {
-                        const a = document.createElement("a");
-                        a.href = site.url;
-                        a.title = site.title || "";
-                        a.target = "_blank";
-                        a.className = linkClassNames;
-                        2;
+        //             topSites.forEach((site) => {
+        //                 const a = document.createElement("a");
+        //                 a.href = site.url;
+        //                 a.title = site.title || "";
+        //                 a.target = "_blank";
+        //                 a.className = linkClassNames;
+        //                 2;
 
-                        if (site.favicon) {
-                            const img = document.createElement("img");
-                            img.className = imgClassNames;
-                            img.src = site.favicon;
-                            a.appendChild(img);
-                        }
+        //                 if (site.favicon) {
+        //                     const img = document.createElement("img");
+        //                     img.className = imgClassNames;
+        //                     img.src = site.favicon;
+        //                     a.appendChild(img);
+        //                 }
 
-                        if (topSitesContainer) {
-                            topSitesContainer.appendChild(a);
-                        }
-                    });
-                });
-        } else {
-            browser.topSites.get().then((topSites) => {
-                if (
-                    topSitesContainer &&
-                    topSitesContainer.id === "topSitesCenter"
-                ) {
-                    topSitesContainer.classList.add(
-                        topSites.length >= 1 && topSites.length < 5
-                            ? `grid-cols-${topSites.length}`
-                            : "grid-cols-5"
-                    );
-                }
+        //                 if (topSitesContainer) {
+        //                     topSitesContainer.appendChild(a);
+        //                 }
+        //             });
+        //         });
+        // } else {
+        //     browser.topSites.get().then((topSites) => {
+        //         if (
+        //             topSitesContainer &&
+        //             topSitesContainer.id === "topSitesCenter"
+        //         ) {
+        //             topSitesContainer.classList.add(
+        //                 topSites.length >= 1 && topSites.length < 5
+        //                     ? `grid-cols-${topSites.length}`
+        //                     : "grid-cols-5"
+        //             );
+        //         }
 
-                topSites.slice(0, maxTopSites).forEach((site) => {
-                    const a = document.createElement("a");
-                    a.href = site.url;
-                    a.title = site.title || "";
-                    a.target = "_blank";
-                    a.className = linkClassNames;
+        //         topSites.slice(0, maxTopSites).forEach((site) => {
+        //             const a = document.createElement("a");
+        //             a.href = site.url;
+        //             a.title = site.title || "";
+        //             a.target = "_blank";
+        //             a.className = linkClassNames;
 
-                    const img = document.createElement("img");
-                    img.className = imgClassNames;
-                    getFavicon(
-                        new URL(site.url).host,
-                        (dataUrl: string) => (img.src = dataUrl)
-                    );
+        //             const img = document.createElement("img");
+        //             img.className = imgClassNames;
+        //             getFavicon(
+        //                 new URL(site.url).host,
+        //                 (dataUrl: string) => (img.src = dataUrl)
+        //             );
 
-                    a.appendChild(img);
+        //             a.appendChild(img);
 
-                    if (topSitesContainer) {
-                        topSitesContainer.appendChild(a);
-                    }
-                });
-            });
-        }
-
-        // const topSites = [
-        //     {
-        //         url: "https://www.music-map.com/",
-        //         title: "Music-Map - The Tourist Map of Music",
-        //     },
-        //     {
-        //         url: "https://traintimes.org.uk/map/tube/schematic/",
-        //         title: "Live map of London Underground trains",
-        //     },
-        //     { url: "https://www.zoomquilt.org/", title: "Zoomquilt" },
-        //     {
-        //         url: "http://hyperphysics.phy-astr.gsu.edu/hbase/index.html",
-        //         title: "HyperPhysics Concepts",
-        //     },
-        //     {
-        //         url: "https://www.mapcrunch.com/",
-        //         title: "MapCrunch - Random Street View",
-        //     },
-        //     { url: "https://pointerpointer.com/", title: "Pointer Pointer" },
-        //     {
-        //         url: "https://ihavenotv.com/",
-        //         title: "Documentaries - watch free online documentaries - ihavenotv.com",
-        //     },
-        //     {
-        //         url: "https://10minutemail.com/",
-        //         title: "10 Minute Mail - Free Anonymous Temporary email - 10 Minute Mail - Free Anonymous Temporary email",
-        //     },
-        //     { url: "http://radiooooo.com/", title: "Radiooooo" },
-        //     {
-        //         url: "https://www.windy.com/?18.730,52.031,3",
-        //         title: "Windy: Wind map & weather forecast",
-        //     },
-        //     {
-        //         url: "http://www.higherlowergame.com/",
-        //         title: "The Higher Lower Game",
-        //     },
-        //     {
-        //         url: "http://endless.horse/",
-        //         title: "hooooooooooooooooooooooooooooooooooooooooooooooooooooooooorse",
-        //     },
-        //     { url: "https://quickdraw.withgoogle.com/", title: "Quick, Draw!" },
-        //     {
-        //         url: "https://archive.org/",
-        //         title: "Internet Archive: Digital Library of Free & Borrowable Books, Movies, Music & Wayback Machine",
-        //     },
-        //     { url: "https://cat-bounce.com/", title: "CAT BOUNCE!" },
-        // ];
-
-        // if (topSitesContainer && topSitesContainer.id === "topSitesCenter") {
-        //     topSitesContainer.classList.add(
-        //         topSites.length >= 1 && topSites.length < 7
-        //             ? `grid-cols-${topSites.length}`
-        //             : "grid-cols-7"
-        //     );
+        //             if (topSitesContainer) {
+        //                 topSitesContainer.appendChild(a);
+        //             }
+        //         });
+        //     });
         // }
 
-        // topSites.slice(0, maxTopSites).forEach((site) => {
-        //     const a = document.createElement("a");
-        //     a.href = site.url;
-        //     a.title = site.title || "";
-        //     a.target = "_blank";
-        //     a.className = linkClassNames;
+        const topSites = [
+            {
+                url: "https://www.music-map.com/",
+                title: "Music-Map - The Tourist Map of Music",
+            },
+            {
+                url: "https://traintimes.org.uk/map/tube/schematic/",
+                title: "Live map of London Underground trains",
+            },
+            { url: "https://www.zoomquilt.org/", title: "Zoomquilt" },
+            {
+                url: "http://hyperphysics.phy-astr.gsu.edu/hbase/index.html",
+                title: "HyperPhysics Concepts",
+            },
+            {
+                url: "https://www.mapcrunch.com/",
+                title: "MapCrunch - Random Street View",
+            },
+            { url: "https://pointerpointer.com/", title: "Pointer Pointer" },
+            {
+                url: "https://ihavenotv.com/",
+                title: "Documentaries - watch free online documentaries - ihavenotv.com",
+            },
+            {
+                url: "https://10minutemail.com/",
+                title: "10 Minute Mail - Free Anonymous Temporary email - 10 Minute Mail - Free Anonymous Temporary email",
+            },
+            { url: "http://radiooooo.com/", title: "Radiooooo" },
+            {
+                url: "https://www.windy.com/?18.730,52.031,3",
+                title: "Windy: Wind map & weather forecast",
+            },
+            {
+                url: "http://www.higherlowergame.com/",
+                title: "The Higher Lower Game",
+            },
+            {
+                url: "http://endless.horse/",
+                title: "hooooooooooooooooooooooooooooooooooooooooooooooooooooooooorse",
+            },
+            { url: "https://quickdraw.withgoogle.com/", title: "Quick, Draw!" },
+            {
+                url: "https://archive.org/",
+                title: "Internet Archive: Digital Library of Free & Borrowable Books, Movies, Music & Wayback Machine",
+            },
+            { url: "https://cat-bounce.com/", title: "CAT BOUNCE!" },
+        ];
 
-        //     const img = document.createElement("img");
-        //     img.className = imgClassNames;
-        //     getFavicon(
-        //         new URL(site.url).host,
-        //         (dataUrl: string) => (img.src = dataUrl)
-        //     );
+        if (topSitesContainer && topSitesContainer.id === "topSitesCenter") {
+            topSitesContainer.classList.add(
+                topSites.length >= 1 && topSites.length < 7
+                    ? `grid-cols-${topSites.length}`
+                    : "grid-cols-7"
+            );
+        }
 
-        //     a.appendChild(img);
+        topSites.slice(0, maxTopSites).forEach((site) => {
+            const a = document.createElement("a");
+            a.href = site.url;
+            a.title = site.title || "";
+            a.target = "_blank";
+            a.className = linkClassNames;
 
-        //     if (topSitesContainer) {
-        //         topSitesContainer.appendChild(a);
-        //     }
-        // });
+            const img = document.createElement("img");
+            img.className = imgClassNames;
+            getFavicon(
+                new URL(site.url).host,
+                (dataUrl: string) => (img.src = dataUrl)
+            );
+
+            a.appendChild(img);
+
+            if (topSitesContainer) {
+                topSitesContainer.appendChild(a);
+            }
+        });
     }
 }
 
@@ -566,7 +566,7 @@ function getFavicon(siteHost: string, callback: Function): void {
             ) {
                 callback(storageResponse.topSitesFavicons[`${siteHost}`]);
             } else {
-                toDataURL(`https://api.faviconkit.com/${siteHost}`)
+                toDataURL(`https://icon.horse/icon/${siteHost}`)
                     .then((dataUrl) => {
                         browser.storage.local.set({
                             topSitesFavicons: {

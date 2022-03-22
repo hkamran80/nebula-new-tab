@@ -69,6 +69,10 @@
                 );
             }
         </style>
+        
+        <!-- Counter Analytics (free, open-source, privacy-focused) -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"hkamran",utcoffset:"-7"}))};sessionStorage.setItem("_swa","1");</script>
+
 
         <script
             src="https://unpkg.com/alpinejs@3.4.2/dist/cdn.min.js"
@@ -845,9 +849,6 @@
             </div>
         </div>
         
-        <!-- Counter Analytics (free, open-source, privacy-focused) -->
-        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"hkamran",utcoffset:"-7"}))};sessionStorage.setItem("_swa","1");</script>
-
         <script>
             const screenshotElement =
                 document.getElementById("nebula-screenshot");

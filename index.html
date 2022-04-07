@@ -7,6 +7,8 @@
 
         <title>Nebula New Tab</title>
 
+        <meta http-equiv="refresh" content="0;url=https://hkamran.com/creations/nebula-new-tab" />
+
         <meta
             name="description"
             content="Nebula New Tab - A clean and simple new tab page"
@@ -742,12 +744,7 @@
             </main>
         </div>
 
-        <div
-            x-data="{ 'dismissed': localStorage.getItem('dismissedUpdateMessage_version1.1') === 'true' }"
-            x-init="$watch('dismissed', val => localStorage.setItem('dismissedUpdateMessage_version1.1', val))"
-            class="fixed bottom-0 inset-x-0 pb-2 sm:pb-5"
-            :class="{ 'hidden': dismissed }"
-        >
+        <div class="fixed bottom-0 inset-x-0 pb-2 sm:pb-5">
             <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div class="p-2 rounded-lg bg-purple-900 shadow-lg sm:p-3">
                     <div class="flex items-center justify-between flex-wrap">
@@ -768,7 +765,15 @@
                                 </svg>
                             </span>
                             <p class="ml-3 font-medium text-white truncate">
-                                Nebula 1.1 is now available!
+                                Nebula New Tab has moved to
+                                <a
+                                    href="https://hkamran.com/creations/nebula-new-tab"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    class="font-bold hover:underline"
+                                >
+                                    hkamran.com/creations/nebula-new-tab
+                                </a>
                             </p>
                         </div>
                         <div
@@ -781,7 +786,7 @@
                             "
                         >
                             <a
-                                href="https://github.com/hkamran80/nebula-new-tab/releases/tag/1.1.0"
+                                href="https://hkamran.com/creations/nebula-new-tab"
                                 rel="noopener noreferrer"
                                 target="_blank"
                                 class="
@@ -801,44 +806,9 @@
                                     bg-white
                                     hover:bg-indigo-50
                                 "
-                                @click="dismissed = true"
                             >
-                                Download
+                                Open
                             </a>
-                        </div>
-                        <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-2">
-                            <button
-                                type="button"
-                                class="
-                                    -mr-1
-                                    flex
-                                    p-2
-                                    rounded-md
-                                    hover:bg-purple-700
-                                    focus:outline-none
-                                    focus:ring-2
-                                    focus:ring-white
-                                "
-                                @click="dismissed = true"
-                            >
-                                <span class="sr-only">Dismiss</span>
-                                <svg
-                                    class="h-6 w-6 text-white"
-                                    x-description="Heroicon name: x"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    ></path>
-                                </svg>
-                            </button>
                         </div>
                     </div>
                 </div>

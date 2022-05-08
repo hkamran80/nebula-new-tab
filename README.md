@@ -21,7 +21,7 @@
 
 ## Installation
 ### Firefox-based Browsers
-[![Get Nebula New Tab on Firefox](docs/get-addon-firefox.png)](https://addons.mozilla.org/en-US/firefox/addon/nebula-new-tab/)
+[![Get Nebula New Tab on Firefox](docs/get-addon-firefox.png)](https://addons.mozilla.org/firefox/addon/nebula-new-tab/)
 
 ### Chromium-based Browsers (Chrome, Brave, etc.)
 1. Download the `nebula-new-tab.zip` file from the [latest release](https://github.com/hkamran80/nebula-new-tab/releases/latest/download/nebula-new-tab.zip)
